@@ -1,0 +1,18 @@
+---
+title: imaging_ai
+authors:
+  - name: Kasra Eskandarizanjani
+    affiliation: The University of Luxembourg
+    roles: writing
+    corresponding: true
+  - name: Mina Naseh
+    affiliation: The University of Luxembourg
+    roles: writing
+  - name: Paria Ighanian
+    affiliation: The University of Luxembourg
+    roles: writing
+bibliography: references.bib
+---
+
+## Section
+This is a simple placeholder for the manuscript's main document [@knuth84].

@@ -1,0 +1,27 @@
+project:
+  type: manuscript
+
+manuscript:
+  article: index.qmd
+
+format:
+  html:
+    comments:
+      hypothesis: true
+    mathjax: true
+    # toc: true
+    number_sections: true
+    grid: 
+      # sidebar-width: 100px
+      body-width: 1000px
+  docx: default
+  jats: default
+
+  # (other formats)
+  # pdf: default
+
+execute:
+  freeze: auto
+
+
+

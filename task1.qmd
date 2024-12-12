@@ -1,0 +1,55 @@
+---
+title: Task 1
+---
+
+```{python}
+import sys
+
+sys.executable
+```
+
+# Task 1
+
+The Fourier transformation $f(x, y) \rightarrowtail F(u, v)$ of a greyscale image $f(x,y)$
+results in a band-limited signal in the spatial frequency range with maximum
+frequencies $f_{umax}$ and $ƒ_{vmax}$. For representation in the computer, the (partial)
+image is sampled in x direction with 20 sampling points per mm and in y
+direction with 10 sampling points per mm.
+
+
+::: {.question}
+1. What is the theoretical maximum value of $f_{umax}$ and $f_{vmax}$ if error-free
+image reconstruction from the digital image should be possible (not using any compressive-sensing techniques)? (6pts)
+:::
+
+::: {.solution}
+According to the Nyquist sampling theorem, the maximum representable frequency (Nyquist frequency) in each direction is half the sampling frequency. The sampling frequency can be derived from the given sampling points per mm.
+
+   - Sampling frequency in x is $f_{sx}$ and the Nyquist frequency in x is $f_{umax}$:
+      $$
+      \begin{align*}
+       &f_{sx} = `{python} (fsx:=20)`\;\text{points/mm} = `{python} fsx` \times 10^3 \, \text{points/m} \\
+       \implies &f_{umax} = \frac{f_{sx}}{2} = `{python} (fnx:=fsx/2)` \, \text{kHz}
+      \end{align*}
+      $$
+
+   - Sampling frequency in y is $f_{sy}$ and the Nyquist frequency in y is $f_{vmax}$:
+      $$
+      \begin{align*}
+       &f_{sy} = `{python} (fsy:=10)` \, \text{points/mm} = `{python} fsy` \times 10^3 \, \text{points/m} \\
+       \implies &f_{vmax} = \frac{f_{sy}}{2} = `{python} (fny:=fsy/2)` \, \text{kHz}
+      \end{align*}
+       $$
+
+This ensures error-free reconstruction, as the digital image will contain all frequency components of the original image within the Nyquist limit. Frequencies above these limits would result in aliasing, violating error-free reconstruction conditions.
+:::
+
+::: {.question}
+What is the minimum memory requirement for the color image $f_F(x, y)$ when stored in a conventional computer system, if $1024$ values are to be  distinguished per color channel. Describe the image format to be used.
+:::
+
+::: {.solution}
+The minimum memory requirement for an image is the product of the number of pixels and the number of bits per pixel. The number of pixels is the product of the image dimensions, and the number of bits per pixel is the sum of the bits per color channel.
+:::
+
+
