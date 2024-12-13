@@ -3,9 +3,8 @@ title: Task 1
 ---
 
 ```{python}
-import sys
-
-sys.executable
+#| echo: false
+import math
 ```
 
 # Task 1
@@ -49,7 +48,23 @@ What is the minimum memory requirement for the color image $f_F(x, y)$ when stor
 :::
 
 ::: {.solution}
-The minimum memory requirement for an image is the product of the number of pixels and the number of bits per pixel. The number of pixels is the product of the image dimensions, and the number of bits per pixel is the sum of the bits per color channel.
+To start lets find the number of ixels
+
+Let the image dimensions in mm be $L_x$ (width) and $L_y$ (height).  
+- Pixels in $x$-direction: $N_x = `{python} fnx` \cdot L_x$ 
+- Pixels in $y$-direction: $N_y = `{python} fny` \cdot L_y$ 
+- Total number of pixels:
+$$
+N_{\text{pixels}} = N_x \cdot N_y = `{python} (Np:=fnx*fny)` \cdot L_x \cdot L_y
+$$
+
+Each pixel in a color image has values for three color channels: Red, Green, and Blue (RGB). Each channel can store $`{python} (vp:=1024)`$ distinct values, which means $log_2^{`{python} vp`} = `{python} (bc:=math.log2(vp))`$ bits per channel.
+
+Total bits per pixel: $b = `{python} bc` \times `{python} (channel_count:=3)` = `{python} (b:=bc*channel_count)`$ bits/pixel.
+
+The memory requirement is the product of the number of pixels and bits per pixel:
+$$
+\text{Used Memory} = N_{\text{pixels}} \cdot b = (`{python} Np` \cdot L_x \cdot L_y) \cdot b \, \text{bits} = `{python} Np/8` \cdot L_x \cdot L_y \cdot `{python} b` \, \text{bytes}
+$$
+
 :::
-
-
