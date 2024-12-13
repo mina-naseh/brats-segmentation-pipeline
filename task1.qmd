@@ -67,4 +67,6 @@ $$
 \text{Used Memory} = N_{\text{pixels}} \cdot b = (`{python} Np` \cdot L_x \cdot L_y) \cdot b \, \text{bits} = `{python} Np/8` \cdot L_x \cdot L_y \cdot `{python} b` \, \text{bytes}
 $$
 
+
+TODO: Im not sure about the answer, I think it should not depend on $L_x$ and $L_y$.
 :::
