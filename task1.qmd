@@ -70,3 +70,11 @@ $$
 
 TODO: Im not sure about the answer, I think it should not depend on $L_x$ and $L_y$.
 :::
+
+::: {.question}
+How many colors could be represented with the quantization chosen in sub-task 3? (2pts) 
+:::
+
+::: {.solution}
+Where is sub-task 3? :(
+:::

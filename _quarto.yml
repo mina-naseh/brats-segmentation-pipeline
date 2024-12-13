@@ -6,6 +6,7 @@ manuscript:
 
 format:
   html:
+    css: style.css
     comments:
       hypothesis: true
     mathjax: true
