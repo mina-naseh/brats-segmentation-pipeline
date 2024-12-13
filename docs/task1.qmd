@@ -1,0 +1,80 @@
+---
+title: Task 1
+---
+
+```{python}
+#| echo: false
+import math
+```
+
+# Task 1
+
+The Fourier transformation $f(x, y) \rightarrowtail F(u, v)$ of a greyscale image $f(x,y)$
+results in a band-limited signal in the spatial frequency range with maximum
+frequencies $f_{umax}$ and $ƒ_{vmax}$. For representation in the computer, the (partial)
+image is sampled in x direction with 20 sampling points per mm and in y
+direction with 10 sampling points per mm.
+
+
+::: {.question}
+1. What is the theoretical maximum value of $f_{umax}$ and $f_{vmax}$ if error-free
+image reconstruction from the digital image should be possible (not using any compressive-sensing techniques)? (6pts)
+:::
+
+::: {.solution}
+According to the Nyquist sampling theorem, the maximum representable frequency (Nyquist frequency) in each direction is half the sampling frequency. The sampling frequency can be derived from the given sampling points per mm.
+
+   - Sampling frequency in x is $f_{sx}$ and the Nyquist frequency in x is $f_{umax}$:
+      $$
+      \begin{align*}
+       &f_{sx} = `{python} (fsx:=20)`\;\text{points/mm} = `{python} fsx` \times 10^3 \, \text{points/m} \\
+       \implies &f_{umax} = \frac{f_{sx}}{2} = `{python} (fnx:=fsx/2)` \, \text{kHz}
+      \end{align*}
+      $$
+
+   - Sampling frequency in y is $f_{sy}$ and the Nyquist frequency in y is $f_{vmax}$:
+      $$
+      \begin{align*}
+       &f_{sy} = `{python} (fsy:=10)` \, \text{points/mm} = `{python} fsy` \times 10^3 \, \text{points/m} \\
+       \implies &f_{vmax} = \frac{f_{sy}}{2} = `{python} (fny:=fsy/2)` \, \text{kHz}
+      \end{align*}
+       $$
+
+This ensures error-free reconstruction, as the digital image will contain all frequency components of the original image within the Nyquist limit. Frequencies above these limits would result in aliasing, violating error-free reconstruction conditions.
+:::
+
+::: {.question}
+What is the minimum memory requirement for the color image $f_F(x, y)$ when stored in a conventional computer system, if $1024$ values are to be  distinguished per color channel. Describe the image format to be used.
+:::
+
+::: {.solution}
+To start lets find the number of ixels
+
+Let the image dimensions in mm be $L_x$ (width) and $L_y$ (height).  
+- Pixels in $x$-direction: $N_x = `{python} fnx` \cdot L_x$ 
+- Pixels in $y$-direction: $N_y = `{python} fny` \cdot L_y$ 
+- Total number of pixels:
+$$
+N_{\text{pixels}} = N_x \cdot N_y = `{python} (Np:=fnx*fny)` \cdot L_x \cdot L_y
+$$
+
+Each pixel in a color image has values for three color channels: Red, Green, and Blue (RGB). Each channel can store $`{python} (vp:=1024)`$ distinct values, which means $log_2^{`{python} vp`} = `{python} (bc:=math.log2(vp))`$ bits per channel.
+
+Total bits per pixel: $b = `{python} bc` \times `{python} (channel_count:=3)` = `{python} (b:=bc*channel_count)`$ bits/pixel.
+
+The memory requirement is the product of the number of pixels and bits per pixel:
+$$
+\text{Used Memory} = N_{\text{pixels}} \cdot b = (`{python} Np` \cdot L_x \cdot L_y) \cdot b \, \text{bits} = `{python} Np/8` \cdot L_x \cdot L_y \cdot `{python} b` \, \text{bytes}
+$$
+
+
+TODO: Im not sure about the answer, I think it should not depend on $L_x$ and $L_y$.
+:::
+
+::: {.question}
+How many colors could be represented with the quantization chosen in sub-task 3? (2pts) 
+:::
+
+::: {.solution}
+Where is sub-task 3? :(
+:::
