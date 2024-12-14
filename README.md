@@ -1,1 +1,0 @@
-# brats-segmentation-pipeline
