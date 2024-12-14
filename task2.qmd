@@ -46,7 +46,7 @@ plt.show()
 
 
 ::: {.question}
-How is the coe\icient c typically determined? (2pts)
+How is the coeficient c typically determined? (2pts)
 :::
 
 ::: {.answer}
