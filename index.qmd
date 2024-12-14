@@ -14,6 +14,11 @@ authors:
 bibliography: references.bib
 ---
 
+```{python}
+import sys
+sys.executable
+```
+
 # Introduction
 
 task 1: [task1.qmd](task1.qmd)
