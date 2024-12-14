@@ -19,8 +19,6 @@ import sys
 sys.executable
 ```
 
-# Introduction
-
-task 1: [task1.qmd](task1.qmd)
-
-task 2: [task2.qmd](task2.qmd)
+{{< include task1.qmd >}}
+{{< include task2.qmd >}}
+{{< include task3.qmd >}}
