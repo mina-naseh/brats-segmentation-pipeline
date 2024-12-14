@@ -42,7 +42,7 @@ jobs:
       run: |
         quarto render
 
-    Optionally, deploy the website (e.g., GitHub Pages)
+    # Optionally, deploy the website (e.g., GitHub Pages)
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
