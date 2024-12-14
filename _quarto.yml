@@ -26,10 +26,10 @@ format:
     # comments:
     #   hypothesis: true
     # mathjax: true
-    # toc: true
+    toc: true
     # number_sections: true
     grid: 
-      sidebar-width: 10px
+      sidebar-width: 100px
       body-width: 1500px
     highlight-style: tango
   # docx: default
@@ -41,3 +41,4 @@ format:
 execute:
   freeze: auto
   echo: true
+
