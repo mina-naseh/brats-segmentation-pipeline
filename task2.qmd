@@ -2,6 +2,9 @@
 title: "task 2"
 ---
 
+
+# Task 2
+
 For the subjective enhancement of a greyscale image $G = g(x, y)$ , a transformation $T_G$ is performed as a so-called gamma correction in the form $T_G : g \rightarrow f$  with $f(x, y) = c g^\gamma (x, y)$ where $g, f \in [0, 255]$. 
 
 ::: {.question}
