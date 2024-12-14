@@ -14,5 +14,8 @@ authors:
 bibliography: references.bib
 ---
 
-## Section
-This is a simple placeholder for the manuscript's main document [@knuth84].
+# Introduction
+
+task 1: [task1.qmd](task1.qmd)
+
+task 2: [task2.qmd](task2.qmd)

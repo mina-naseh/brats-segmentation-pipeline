@@ -1,0 +1,115 @@
+---
+title: "task 2"
+---
+
+For the subjective enhancement of a greyscale image $G = g(x, y)$ , a transformation $T_G$ is performed as a so-called gamma correction in the form $T_G : g \rightarrow f$  with $f(x, y) = c g^\gamma (x, y)$ where $g, f \in [0, 255]$. 
+
+::: {.question}
+Sketch the transformation curve $T_G$ for $\gamma_1 = 0.5$ and $\gamma_2 = 2$
+:::
+
+::: {.answer}
+The first step is to find the values of $c$ for both cases. Since $\max(f) = \max(g) = 255$, we have $c = 255 / 255^\gamma$.
+
+```{python}
+from matplotlib import pyplot as plt
+import numpy as np
+
+
+def draw_transform_curve(gamma: float, ax: plt.Axes = None, label: bool = True):
+    if not ax:
+        fig, ax = plt.subplots()
+    x = np.linspace(0, 255, 256)
+    c = 255 / 255**gamma
+    y = c * x**gamma
+    message = f"$f = {c:0.4f} \\times g^{{{gamma}}}$"
+    if label:
+        ax.plot(x, y, label=message)
+    else:
+        ax.plot(x, y)
+    ax.set_xlabel("g")
+    if label:
+        ax.set_ylabel("f")
+    else:
+        ax.set_ylabel(message)
+
+
+fig, ax = plt.subplots()
+for gamma in [0.5, 2]:
+    draw_transform_curve(gamma, ax)
+ax.set_title(f"Transformation curve for $\\gamma=0.5$ and $\\gamma=2$")
+ax.legend()
+plt.show()
+```
+
+:::
+
+
+::: {.question}
+How is the coe\icient c typically determined? (2pts)
+:::
+
+::: {.answer}
+The coefficient $c$ is typically determined such that the maximum value of the input image is mapped to the maximum value of the output image. This is done to ensure that the full dynamic range of the output image is used.
+
+As mentioned above, $c = 255 / 255^\gamma$.
+:::
+
+::: {.question}
+In which respect and for which type of input images $G$ do the two gamma values $\gamma_1,\;\gamma_2$ lead to an image enhancement respectively? (2pts)
+:::
+
+::: {.answer}
+For $\gamma < 1$, the transformation curve is concave, which means that the lower intensity values are stretched more than the higher intensity values. This leads to a brighter image with more contrast. This is useful for images with low contrast.
+
+For $\gamma > 1$, the transformation curve is convex, which means that the higher intensity values are stretched more than the lower intensity values. This leads to a darker image with more contrast. This is useful for images with high contrast.
+:::
+
+::: {.question}
+What should be the minimum slope of the transform function? 
+
+1. for a grey value spread (2pts) 
+2. for a grey value compression (2pts)
+:::
+
+::: {.answer}
+
+It's important to note that a slope of exactly 1 implies no change in contrast, as the transformation function becomes an identity mapping. Also, a slope of 0 implies that the output image will be a constant value, which is not useful for image enhancement.
+
+1. For a grey value spread, the minimum slope of the transform function should be 1.
+2. For a grey value compression, the minimum slope of the transform function should be 0 (and smaller than 1).
+For instance, in this function:
+```{python}
+# | echo: False
+
+x = [0, 80, 160, 255]
+y = [0, 40, 200, 255]
+spread_range = None
+compress_range = None
+plt.plot([0, 255], [0, 255], "--", label="y=x", alpha=0.75)
+plt.plot(x, y, label="$T_G$")
+plt.xlabel("input intensity")
+plt.ylabel("output intensity")
+for x_, y_ in zip(x, y):
+    plt.plot([x_, x_], [0, y_], "k.--", alpha=0.3)
+    plt.plot([0, x_], [y_, y_], "k.--", alpha=0.3)
+for (x_, y_), (x__, y__) in zip(zip(x, y), zip(x[1:], y[1:])):
+    slope = (y__ - y_) / (x__ - x_)
+    plt.text((x_ + x__) / 2, (y_ + y__) / 2, f"s={slope:.2f}")
+    if 0 < slope < 1:
+        compress_range = [(x_, x__), (y_, y__)]
+    elif slope > 1:
+        spread_range = [(x_, x__), (y_, y__)]
+
+assert spread_range is not None
+assert compress_range is not None
+plt.xticks(x)
+plt.yticks(y)
+plt.xlim(0, 255)
+plt.ylim(0, 255)
+plt.legend()
+plt.show()
+```
+
+As we can see, the gray values between `{python} spread_range[0]` are streched between `{python} spread_range[1]` which has a slope greater than 1. On the other hand, the gray values between `{python} compress_range[0]` are compressed between `{python} compress_range[1]` which has a slope smaller than 1.
+:::

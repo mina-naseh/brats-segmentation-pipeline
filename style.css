@@ -10,7 +10,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.solution {
+.answer {
     background-color: #ffffff;
     border: 1px solid #dddddd;
     padding: 10px 15px;
@@ -22,19 +22,25 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.solution::before {
-    content: "Solution:\n";
+.question::before {
+    content: "Q:";
+    font-weight: bold;
+    color: #4caf50;
+}
+
+.answer::before {
+    content: "Solution:";
     font-weight: bold;
     color: #5174de;
 }
 
 
 .question:hover,
-.solution:hover {
+.answer:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .question,
-.solution {
+.answer {
     transition: box-shadow 0.3s ease;
 }

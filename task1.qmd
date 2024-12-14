@@ -21,7 +21,7 @@ direction with 10 sampling points per mm.
 image reconstruction from the digital image should be possible (not using any compressive-sensing techniques)? (6pts)
 :::
 
-::: {.solution}
+::: {.answer}
 According to the Nyquist sampling theorem, the maximum representable frequency (Nyquist frequency) in each direction is half the sampling frequency. The sampling frequency can be derived from the given sampling points per mm.
 
    - Sampling frequency in x is $f_{sx}$ and the Nyquist frequency in x is $f_{umax}$:
@@ -47,7 +47,7 @@ This ensures error-free reconstruction, as the digital image will contain all fr
 What is the minimum memory requirement for the color image $f_F(x, y)$ when stored in a conventional computer system, if $1024$ values are to be  distinguished per color channel. Describe the image format to be used.
 :::
 
-::: {.solution}
+::: {.answer}
 To start lets find the number of ixels
 
 Let the image dimensions in mm be $L_x$ (width) and $L_y$ (height).  
@@ -75,6 +75,8 @@ TODO: Im not sure about the answer, I think it should not depend on $L_x$ and $L
 How many colors could be represented with the quantization chosen in sub-task 3? (2pts) 
 :::
 
-::: {.solution}
+::: {.answer}
 Where is sub-task 3? :(
 :::
+
+

@@ -1,29 +1,43 @@
 project:
-  type: manuscript
+  type: website
   output-dir: docs
 
 manuscript:
   article: index.qmd
 
+site:
+  title: "Quarto"
+  description: "Quarto is a scientific writing and publishing tool designed for researchers."
+  url: "https://quarto.org"
+
 format:
   html:
+    code-fold: true
+    # theme: revealjs
+      # - cosmo
+      # - flatly
+      # - journal
+      # - readable
+      # - spacelab
+      # - united
+      # - yeti
     css: style.css
-    comments:
-      hypothesis: true
-    mathjax: true
+    # css: null
+    # comments:
+    #   hypothesis: true
+    # mathjax: true
     # toc: true
-    number_sections: true
+    # number_sections: true
     grid: 
-      # sidebar-width: 100px
-      body-width: 1000px
-  docx: default
-  jats: default
+      sidebar-width: 10px
+      body-width: 1500px
+    highlight-style: tango
+  # docx: default
+  # jats: default
 
   # (other formats)
-  # pdf: default
+  pdf: default
 
 execute:
   freeze: auto
-
-
-
+  echo: true
