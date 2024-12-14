@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mina-naseh.github.io/brats-segmentation-pipeline/task2.html</loc>
-    <lastmod>2024-12-14T14:16:21.653Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mina-naseh.github.io/brats-segmentation-pipeline/task1.html</loc>
-    <lastmod>2024-12-14T14:16:21.653Z</lastmod>
+    <loc>https://mina-naseh.github.io/brats-segmentation-pipeline/task3.html</loc>
+    <lastmod>2024-12-14T18:25:21.867Z</lastmod>
   </url>
   <url>
     <loc>https://mina-naseh.github.io/brats-segmentation-pipeline/index.html</loc>
-    <lastmod>2024-12-14T14:16:21.653Z</lastmod>
+    <lastmod>2024-12-14T18:25:21.867Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mina-naseh.github.io/brats-segmentation-pipeline/task1.html</loc>
+    <lastmod>2024-12-14T18:25:21.867Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mina-naseh.github.io/brats-segmentation-pipeline/task2.html</loc>
+    <lastmod>2024-12-14T18:25:21.867Z</lastmod>
   </url>
 </urlset>

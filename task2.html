@@ -71,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-05fe91a66cf75bbbb8c9664867fe5124.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8adbe41a18ac17a25dbbb07a61e80847.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ad5180e5eeb89b606b691140ab90c92d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -141,8 +141,14 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="task2.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#task-2" id="toc-task-2" class="nav-link active" data-scroll-target="#task-2">Task 2</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="task2.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -165,13 +171,15 @@ window.Quarto = {
 </header>
 
 
+<section id="task-2" class="level1">
+<h1>Task 2</h1>
 <p>For the subjective enhancement of a greyscale image <span class="math inline">\(G = g(x, y)\)</span> , a transformation <span class="math inline">\(T_G\)</span> is performed as a so-called gamma correction in the form <span class="math inline">\(T_G : g \rightarrow f\)</span> with <span class="math inline">\(f(x, y) = c g^\gamma (x, y)\)</span> where <span class="math inline">\(g, f \in [0, 255]\)</span>.</p>
 <div class="question">
 <p>Sketch the transformation curve <span class="math inline">\(T_G\)</span> for <span class="math inline">\(\gamma_1 = 0.5\)</span> and <span class="math inline">\(\gamma_2 = 2\)</span></p>
 </div>
 <div class="answer">
 <p>The first step is to find the values of <span class="math inline">\(c\)</span> for both cases. Since <span class="math inline">\(\max(f) = \max(g) = 255\)</span>, we have <span class="math inline">\(c = 255 / 255^\gamma\)</span>.</p>
-<div id="1dc709bf" class="cell" data-execution_count="1">
+<div id="f295c782" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
@@ -239,7 +247,7 @@ window.Quarto = {
 <li>For a grey value spread, the minimum slope of the transform function should be 1.</li>
 <li>For a grey value compression, the minimum slope of the transform function should be 0 (and smaller than 1). For instance, in this function:</li>
 </ol>
-<div id="00400693" class="cell" data-execution_count="2">
+<div id="f1a17950" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -252,6 +260,7 @@ window.Quarto = {
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
