@@ -1,4 +1,9 @@
+body {
+    counter-reset: question_counter;
+}
+
 .question {
+    counter-increment: question_counter;
     background-color: #f9f9f9;
     border-left: 4px solid #4caf50;
     padding: 10px 15px;
@@ -23,7 +28,7 @@
 }
 
 .question::before {
-    content: "Q:";
+    content: "Q" counter(question_counter) ". ";
     font-weight: bold;
     color: #4caf50;
 }
