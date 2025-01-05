@@ -5,3 +5,5 @@ _manuscript/
 _site/
 docs/
 *.quarto_ipynb
+.DS_Store
+.venv/
