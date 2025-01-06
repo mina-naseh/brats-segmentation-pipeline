@@ -1,68 +1,75 @@
 import os
-from glob import glob
-from typing import List, Dict
-from monai.transforms import Compose, LoadImaged, EnsureChannelFirstd, ScaleIntensityd, EnsureTyped
-from monai.data import CacheDataset, DataLoader
+from torch.utils.data import Dataset, DataLoader
+import nibabel as nib
+import numpy as np
 
-def get_patient_data(base_dir: str) -> List[Dict[str, str]]:
+class BraTSDataset(Dataset):
     """
-    Generate a list of dictionaries with paths to modalities and labels for each patient.
+    Custom PyTorch Dataset for BraTS data.
+    """
+    def __init__(self, patient_dirs, transform=None):
+        """
+        Args:
+            patient_dirs (list): List of patient directories.
+            transform (callable, optional): Optional transform to be applied on a sample.
+        """
+        self.patient_dirs = patient_dirs
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.patient_dirs)
+
+    def __getitem__(self, idx):
+        """
+        Load data and labels for a given patient.
+        """
+        patient_dir = self.patient_dirs[idx]
+        sample = {}
+
+        # Load the four MRI modalities
+        modalities = ['t1', 't1ce', 't2', 'flair']
+        for modality in modalities:
+            file_path = os.path.join(patient_dir, f"{os.path.basename(patient_dir)}_{modality}.nii.gz")
+            sample[modality] = nib.load(file_path).get_fdata()
+
+        # Load the segmentation label
+        label_path = os.path.join(patient_dir, f"{os.path.basename(patient_dir)}_seg.nii.gz")
+        sample['label'] = nib.load(label_path).get_fdata()
+
+        if self.transform:
+            sample = self.transform(sample)
+
+        return sample
+
+
+def get_patient_data(base_path, limit=20):
+    """
+    List patient directories.
 
     Args:
-        base_dir (str): Path to the dataset directory.
+        base_path (str): Path to the dataset directory.
+        limit (int): Number of patients to load (default is 20).
 
     Returns:
-        List[Dict[str, str]]: List of patient data dictionaries.
+        list: List of patient directories.
     """
-    patients = sorted(glob(os.path.join(base_dir, "BraTS2021_*")))
-    data_dicts = []
-
-    for patient in patients:
-        patient_id = os.path.basename(patient)  # Get folder name like "BraTS2021_00000"
-        data_dicts.append({
-            "FLAIR": os.path.join(patient, f"{patient_id}_flair.nii.gz"),
-            "T1": os.path.join(patient, f"{patient_id}_t1.nii.gz"),
-            "T1CE": os.path.join(patient, f"{patient_id}_t1ce.nii.gz"),
-            "T2": os.path.join(patient, f"{patient_id}_t2.nii.gz"),
-            "label": os.path.join(patient, f"{patient_id}_seg.nii.gz"),
-        })
-
-    return data_dicts
+    all_patients = [os.path.join(base_path, patient) for patient in os.listdir(base_path) if patient.startswith("BraTS")]
+    return all_patients[:limit]  # Limit to 20 patients for now
 
 
-def get_dataloader(
-    data_dicts: List[Dict[str, str]],
-    batch_size: int,
-    cache_rate: float = 0.5,
-    num_workers: int = 4,
-    shuffle: bool = True,
-):
+def get_dataloader(patient_dirs, batch_size=2, shuffle=True, num_workers=0, transform=None):
     """
-    Create a DataLoader for the BraTS dataset.
+    Create a PyTorch DataLoader for the BraTS dataset.
 
     Args:
-        data_dicts (List[Dict[str, str]]): List of patient data dictionaries.
-        batch_size (int): Batch size for DataLoader.
-        cache_rate (float): Percentage of data to cache in memory.
-        num_workers (int): Number of workers for data loading.
+        patient_dirs (list): List of patient directories.
+        batch_size (int): Number of samples per batch.
         shuffle (bool): Whether to shuffle the data.
+        num_workers (int): Number of worker threads for data loading.
+        transform (callable, optional): Data transformations.
 
     Returns:
-        DataLoader: PyTorch DataLoader object.
+        DataLoader: PyTorch DataLoader.
     """
-    transforms = Compose([
-        LoadImaged(keys=["FLAIR", "T1", "T1CE", "T2", "label"]),
-        EnsureChannelFirstd(keys=["FLAIR", "T1", "T1CE", "T2", "label"]),
-        ScaleIntensityd(keys=["FLAIR", "T1", "T1CE", "T2"]),
-        EnsureTyped(keys=["FLAIR", "T1", "T1CE", "T2", "label"]),
-    ])
-
-    dataset = CacheDataset(
-        data=data_dicts,
-        transform=transforms,
-        cache_rate=cache_rate,
-        num_workers=num_workers,
-    )
-
-    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
-    return dataloader
+    dataset = BraTSDataset(patient_dirs, transform=transform)
+    return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)

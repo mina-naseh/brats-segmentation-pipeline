@@ -8,11 +8,11 @@
 #SBATCH --cpus-per-task=4            # Number of CPU cores per task
 #SBATCH --mem=16G                    # Memory per node
 
-# # Load required modules
-# module load python/3.8
+# Set PYTHONPATH to include src
+export PYTHONPATH=$(pwd)/src:$PYTHONPATH
 
 # Activate your Python virtual environment
-source ../.venv/bin/activate
+source /home/users/mnaseh/brats-segmentation-pipeline/.venv/bin/activate
 
-# Navigate to the project directory and run the test
+# Run the test
 python tests/test_dataloader.py

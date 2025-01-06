@@ -1,0 +1,13 @@
+[2025-01-06 21:49:48] Starting dataloader test...
+[2025-01-06 21:49:48] Reading patient directories from /work/projects/ai_imaging_class/dataset
+[2025-01-06 21:49:48] Found 20 patient directories (limit = 20)
+[2025-01-06 21:49:48] Initialized DataLoader with batch_size=2, shuffle=False, num_workers=0
+[2025-01-06 21:49:48] Starting to load batches...
+[2025-01-06 21:49:49] Loading batch 1
+[2025-01-06 21:49:49]   Modality 't1' shape: torch.Size([2, 240, 240, 155])
+[2025-01-06 21:49:49]   Modality 't1ce' shape: torch.Size([2, 240, 240, 155])
+[2025-01-06 21:49:49]   Modality 't2' shape: torch.Size([2, 240, 240, 155])
+[2025-01-06 21:49:49]   Modality 'flair' shape: torch.Size([2, 240, 240, 155])
+[2025-01-06 21:49:49]   Label shape: torch.Size([2, 240, 240, 155])
+[2025-01-06 21:49:49] Batch 1 loaded successfully
+[2025-01-06 21:49:49] Dataloader test completed successfully.
