@@ -7,3 +7,14 @@ docs/
 *.quarto_ipynb
 .DS_Store
 .venv/
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pywz
+task4/tests/__pycache__/
+task4/src/brats_segmentation/__pycache__/
+task4/.pytest_cache/
