@@ -1,6 +1,6 @@
 jupyter==1.1.1
 matplotlib==3.9.4
-numpy==2.2.0
+numpy==1.26.4
 opencv-python==4.10.0.84
 scikit-image==0.25.0
 nibabel
