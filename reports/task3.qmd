@@ -80,7 +80,7 @@ def otsu_threshold(
     ), "The number of thresholds should be equal to the number of classes - 1"
     masks = [(img >= t1) & (img < t2) for t1, t2 in zip(threshold, threshold[1:])]
     # masks.append(img >= threshold[-1])
-    assert all(mask.dtype == np.bool for mask in masks), "Masks should be boolean"
+    assert all(mask.dtype == bool for mask in masks), "Masks should be boolean"
     assert (
         len(masks) == classes
     ), "The number of masks should be equal to the number of classes"
