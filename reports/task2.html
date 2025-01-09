@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Task 1 – Quarto</title>
+<title>task 2 – Quarto</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,24 +20,58 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-9e1f2a4632985dffc2c80318c992baf5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ad5180e5eeb89b606b691140ab90c92d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9e1f2a4632985dffc2c80318c992baf5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-12a3905ca41d7905ec29e503223e6151.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -96,7 +130,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../reports/style.css">
 </head>
 
 <body>
@@ -111,16 +145,16 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#task-1" id="toc-task-1" class="nav-link active" data-scroll-target="#task-1">Task 1</a></li>
+  <li><a href="#task-2" id="toc-task-2" class="nav-link active" data-scroll-target="#task-2">Task 2</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="task1.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="task2.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Task 1</h1>
+<h1 class="title">task 2</h1>
 </div>
 
 
@@ -137,49 +171,92 @@ window.Quarto = {
 </header>
 
 
-<section id="task-1" class="level1">
-<h1>Task 1</h1>
-<p>The Fourier transformation <span class="math inline">\(f(x, y) \rightarrowtail F(u, v)\)</span> of a greyscale image <span class="math inline">\(f(x,y)\)</span> results in a band-limited signal in the spatial frequency range with maximum frequencies <span class="math inline">\(f_{umax}\)</span> and <span class="math inline">\(ƒ_{vmax}\)</span>. For representation in the computer, the (partial) image is sampled in x direction with 20 sampling points per mm and in y direction with 10 sampling points per mm.</p>
+<section id="task-2" class="level1">
+<h1>Task 2</h1>
+<p>For the subjective enhancement of a greyscale image <span class="math inline">\(G = g(x, y)\)</span> , a transformation <span class="math inline">\(T_G\)</span> is performed as a so-called gamma correction in the form <span class="math inline">\(T_G : g \rightarrow f\)</span> with <span class="math inline">\(f(x, y) = c g^\gamma (x, y)\)</span> where <span class="math inline">\(g, f \in [0, 255]\)</span>.</p>
 <div class="question">
+<p>Sketch the transformation curve <span class="math inline">\(T_G\)</span> for <span class="math inline">\(\gamma_1 = 0.5\)</span> and <span class="math inline">\(\gamma_2 = 2\)</span></p>
+</div>
+<div class="answer">
+<p>The first step is to find the values of <span class="math inline">\(c\)</span> for both cases. Since <span class="math inline">\(\max(f) = \max(g) = 255\)</span>, we have <span class="math inline">\(c = 255 / 255^\gamma\)</span>.</p>
+<div id="a81691e8" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_transform_curve(gamma: <span class="bu">float</span>, ax: plt.Axes <span class="op">=</span> <span class="va">None</span>, label: <span class="bu">bool</span> <span class="op">=</span> <span class="va">True</span>):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> ax:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">256</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> <span class="dv">255</span> <span class="op">/</span> <span class="dv">255</span><span class="op">**</span>gamma</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> c <span class="op">*</span> x<span class="op">**</span>gamma</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> <span class="ss">f"$f = </span><span class="sc">{</span>c<span class="sc">:0.4f}</span><span class="ss"> </span><span class="ch">\\</span><span class="ss">times g^</span><span class="ch">{{</span><span class="sc">{</span>gamma<span class="sc">}</span><span class="ch">}}</span><span class="ss">$"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> label:</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        ax.plot(x, y, label<span class="op">=</span>message)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        ax.plot(x, y)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">"g"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> label:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        ax.set_ylabel(<span class="st">"f"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        ax.set_ylabel(message)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gamma <span class="kw">in</span> [<span class="fl">0.5</span>, <span class="dv">2</span>]:</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    draw_transform_curve(gamma, ax)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"Transformation curve for $</span><span class="ch">\\</span><span class="ss">gamma=0.5$ and $</span><span class="ch">\\</span><span class="ss">gamma=2$"</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="task2_files/figure-html/cell-2-output-1.png" width="593" height="450" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="question">
+<p>How is the coeficient c typically determined? (2pts)</p>
+</div>
+<div class="answer">
+<p>The coefficient <span class="math inline">\(c\)</span> is typically determined such that the maximum value of the input image is mapped to the maximum value of the output image. This is done to ensure that the full dynamic range of the output image is used.</p>
+<p>As mentioned above, <span class="math inline">\(c = 255 / 255^\gamma\)</span>.</p>
+</div>
+<div class="question">
+<p>In which respect and for which type of input images <span class="math inline">\(G\)</span> do the two gamma values <span class="math inline">\(\gamma_1,\;\gamma_2\)</span> lead to an image enhancement respectively? (2pts)</p>
+</div>
+<div class="answer">
+<p>For <span class="math inline">\(\gamma &lt; 1\)</span>, the transformation curve is concave, which means that the lower intensity values are stretched more than the higher intensity values. This leads to a brighter image with more contrast. This is useful for images with low contrast.</p>
+<p>For <span class="math inline">\(\gamma &gt; 1\)</span>, the transformation curve is convex, which means that the higher intensity values are stretched more than the lower intensity values. This leads to a darker image with more contrast. This is useful for images with high contrast.</p>
+</div>
+<div class="question">
+<p>What should be the minimum slope of the transform function?</p>
 <ol type="1">
-<li>What is the theoretical maximum value of <span class="math inline">\(f_{umax}\)</span> and <span class="math inline">\(f_{vmax}\)</span> if error-free image reconstruction from the digital image should be possible (not using any compressive-sensing techniques)? (6pts)</li>
+<li>for a grey value spread (2pts)</li>
+<li>for a grey value compression (2pts)</li>
 </ol>
 </div>
 <div class="answer">
-<p>According to the Nyquist sampling theorem, the maximum representable frequency (Nyquist frequency) in each direction is half the sampling frequency. The sampling frequency can be derived from the given sampling points per mm.</p>
-<ul>
-<li><p>Sampling frequency in x is <span class="math inline">\(f_{sx}\)</span> and the Nyquist frequency in x is <span class="math inline">\(f_{umax}\)</span>: <span class="math display">\[\begin{align*}
-  &amp;f_{sx} = 20\;\text{points/mm} = 20 \times 10^3 \, \text{points/m} \\
-  \implies &amp;f_{umax} = \frac{f_{sx}}{2} = 10.0 \, \text{kHz}
-\end{align*}\]</span></p></li>
-<li><p>Sampling frequency in y is <span class="math inline">\(f_{sy}\)</span> and the Nyquist frequency in y is <span class="math inline">\(f_{vmax}\)</span>: <span class="math display">\[\begin{align*}
-  &amp;f_{sy} = 10 \, \text{points/mm} = 10 \times 10^3 \, \text{points/m} \\
-  \implies &amp;f_{vmax} = \frac{f_{sy}}{2} = 5.0 \, \text{kHz}
-\end{align*}\]</span></p></li>
-</ul>
-<p>This ensures error-free reconstruction, as the digital image will contain all frequency components of the original image within the Nyquist limit. Frequencies above these limits would result in aliasing, violating error-free reconstruction conditions.</p>
+<p>It’s important to note that a slope of exactly 1 implies no change in contrast, as the transformation function becomes an identity mapping. Also, a slope of 0 implies that the output image will be a constant value, which is not useful for image enhancement.</p>
+<ol type="1">
+<li>For a grey value spread, the minimum slope of the transform function should be 1.</li>
+<li>For a grey value compression, the minimum slope of the transform function should be 0 (and smaller than 1). For instance, in this function:</li>
+</ol>
+<div id="7dc566a6" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="task2_files/figure-html/cell-3-output-1.png" width="606" height="434" class="figure-img"></p>
+</figure>
 </div>
-<div class="question">
-<p>What is the minimum memory requirement for the color image <span class="math inline">\(f_F(x, y)\)</span> when stored in a conventional computer system, if <span class="math inline">\(1024\)</span> values are to be distinguished per color channel. Describe the image format to be used.</p>
 </div>
-<div class="answer">
-<p>To start lets find the number of ixels</p>
-<p>Let the image dimensions in mm be <span class="math inline">\(L_x\)</span> (width) and <span class="math inline">\(L_y\)</span> (height).<br>
-- Pixels in <span class="math inline">\(x\)</span>-direction: <span class="math inline">\(N_x = 10.0 \cdot L_x\)</span> - Pixels in <span class="math inline">\(y\)</span>-direction: <span class="math inline">\(N_y = 5.0 \cdot L_y\)</span> - Total number of pixels: <span class="math display">\[
-N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
-\]</span></p>
-<p>Each pixel in a color image has values for three color channels: Red, Green, and Blue (RGB). Each channel can store <span class="math inline">\(1024\)</span> distinct values, which means <span class="math inline">\(log_2^{1024} = 10.0\)</span> bits per channel.</p>
-<p>Total bits per pixel: <span class="math inline">\(b = 10.0 \times 3 = 30.0\)</span> bits/pixel.</p>
-<p>The memory requirement is the product of the number of pixels and bits per pixel: <span class="math display">\[
-\text{Used Memory} = N_{\text{pixels}} \cdot b = (50.0 \cdot L_x \cdot L_y) \cdot b \, \text{bits} = 6.25 \cdot L_x \cdot L_y \cdot 30.0 \, \text{bytes}
-\]</span></p>
-<p>TODO: Im not sure about the answer, I think it should not depend on <span class="math inline">\(L_x\)</span> and <span class="math inline">\(L_y\)</span>.</p>
 </div>
-<div class="question">
-<p>How many colors could be represented with the quantization chosen in sub-task 3? (2pts)</p>
-</div>
-<div class="answer">
-<p>Where is sub-task 3? :(</p>
+<p>As we can see, the gray values between (80, 160) are streched between (40, 200) which has a slope greater than 1. On the other hand, the gray values between (160, 255) are compressed between (200, 255) which has a slope smaller than 1.</p>
 </div>
 
 
