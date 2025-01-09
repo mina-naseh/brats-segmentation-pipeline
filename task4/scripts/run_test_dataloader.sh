@@ -9,10 +9,12 @@
 #SBATCH --mem=16G                    # Memory per node
 
 # Set PYTHONPATH to include src
-export PYTHONPATH=$(pwd)/src:$PYTHONPATH
+export PYTHONPATH=$(pwd):$PYTHONPATH
 
 # Activate your Python virtual environment
-source /home/users/mnaseh/brats-segmentation-pipeline/.venv/bin/activate
+# source /home/users/mnaseh/brats-segmentation-pipeline/.venv/bin/activate
 
 # Run the test
-python tests/test_dataloader.py
+# python tests/test_dataloader.py
+# alternatively, you can run this command (suggested, it will run all the tests in the tests directory, gives better output, and runs faster):
+pytest

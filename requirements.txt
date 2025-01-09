@@ -3,3 +3,6 @@ matplotlib==3.9.4
 numpy==2.2.0
 opencv-python==4.10.0.84
 scikit-image==0.25.0
+nibabel
+monai==1.4.0
+pytest
