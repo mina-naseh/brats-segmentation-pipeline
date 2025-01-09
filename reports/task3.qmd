@@ -1,7 +1,5 @@
 ---
 title: "task 3"
-bibliography: references.bib
-# csl: nature.csl
 ---
 
 # Task 3
@@ -18,9 +16,13 @@ Read the greyscale image brain.png, which is provided on the lecture homepage. R
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+
 
 img_noise = cv2.imread("brain-noisy.png", cv2.IMREAD_GRAYSCALE)
-assert img_noise is not None, "Image not found"
+if img_noise is None:
+    img_noise = cv2.imread("./reports/brain-noisy.png", cv2.IMREAD_GRAYSCALE)
+assert img_noise is not None, "Image not found {}".format(os.listdir())
 img = cv2.medianBlur(img_noise, 5)
 img = cv2.GaussianBlur(img, (5, 5), 0)
 

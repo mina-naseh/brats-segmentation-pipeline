@@ -21,7 +21,7 @@ format:
       # - spacelab
       # - united
       # - yeti
-    css: style.css
+    css: reports/style.css
     # css: null
     # comments:
     #   hypothesis: true

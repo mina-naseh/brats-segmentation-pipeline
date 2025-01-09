@@ -11,7 +11,7 @@ authors:
   - name: Paria Ighanian
     affiliation: The University of Luxembourg
     roles: writing
-bibliography: references.bib
+bibliography: reports/references.bib
 ---
 
 ```{python}
@@ -19,6 +19,6 @@ import sys
 sys.executable
 ```
 
-{{< include task1.qmd >}}
-{{< include task2.qmd >}}
-{{< include task3.qmd >}}
+{{< include reports/task1.qmd >}}
+{{< include reports/task2.qmd >}}
+{{< include reports/task3.qmd >}}
