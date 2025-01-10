@@ -1,0 +1,51 @@
+---
+title: "Task 4"
+---
+
+# Task 4
+
+## Data Handling and Preprocessing (10 Points) 
+::: {.question}
+a. You can focus for now on loading the T1-weighted images and the 
+matching labels. 
+b. Create a dataloader for the data using PyTorch’s Dataloader (or Monai’s 
+Dataloader class) 
+c. Create suitable augmentations for the task to solve. Please note: If you 
+apply transformations to the input data, you should think about if you 
+need to apply any transformation to the label of the image as well.
+:::
+
+::: {.answer}
+We didnt used Monai's Dataloader class, because we wanted to use the data in the HPC. The dataset implementation is availabel in the `task4/brats_segmentations/dataloader.py`
+
+::: {.hscroll}
+```{python}
+# | echo: false
+from IPython.display import Markdown, display
+
+lines = []
+is_started = False
+with open("../task4/brats_segmentation/dataloader.py", "r") as file:
+    for line in file:
+        if line.startswith("class"):
+            is_started = True
+        if is_started and line.startswith("# >> END <<"):
+            break
+        if is_started:
+            lines.append(line)
+    code = "".join(lines)
+
+    display(Markdown(f"```python\n{code}\n```"))
+```
+
+<style>
+.hscroll {
+    overflow-x: auto;
+    white-space: nowrap;
+    max-height: 500px;
+}
+</style>
+
+:::
+
+:::
