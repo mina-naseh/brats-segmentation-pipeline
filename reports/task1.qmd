@@ -73,9 +73,9 @@ How many colors could be represented with the quantization chosen in sub-task 3?
 
 ::: {.answer}
 Each channel (Red, Green, and Blue) can represent 1024 intensity levels. With 10 bits per channel and 3 channels, the total number of colors is:
-
+\[
 \text{Total colors} = 1024^3 = 1,073,741,824
-
+\]
 :::
 
 
