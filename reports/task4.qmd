@@ -21,11 +21,18 @@ We didnt used Monai's Dataloader class, because we wanted to use the data in the
 ::: {.hscroll}
 ```{python}
 # | echo: false
+print("file name:", end=" ")
+import os
 from IPython.display import Markdown, display
 
 lines = []
 is_started = False
-with open("../task4/brats_segmentation/dataloader.py", "r") as file:
+file = "task4/brats_segmentation/dataloader.py"
+if not os.path.exists(file):
+    file = os.path.join("..", file)
+print(file)
+
+with open(file, "r") as file:
     for line in file:
         if line.startswith("class"):
             is_started = True
