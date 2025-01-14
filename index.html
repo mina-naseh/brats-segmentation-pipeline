@@ -168,6 +168,10 @@ window.Quarto = {
   <li><a href="#task-1" id="toc-task-1" class="nav-link active" data-scroll-target="#task-1">Task 1</a></li>
   <li><a href="#task-2" id="toc-task-2" class="nav-link" data-scroll-target="#task-2">Task 2</a></li>
   <li><a href="#task-3" id="toc-task-3" class="nav-link" data-scroll-target="#task-3">Task 3</a></li>
+  <li><a href="#task-4" id="toc-task-4" class="nav-link" data-scroll-target="#task-4">Task 4</a>
+  <ul class="collapse">
+  <li><a href="#data-handling-and-preprocessing-10-points" id="toc-data-handling-and-preprocessing-10-points" class="nav-link" data-scroll-target="#data-handling-and-preprocessing-10-points">Data Handling and Preprocessing (10 Points)</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
@@ -222,7 +226,7 @@ window.Quarto = {
 </header>
 
 
-<div id="95eb90d2" class="cell" data-execution_count="1">
+<div id="0d402d4f" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
@@ -277,7 +281,8 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>How many colors could be represented with the quantization chosen in sub-task 3? (2pts)</p>
 </div>
 <div class="answer">
-<p>Where is sub-task 3? :(</p>
+<p>Each channel (Red, Green, and Blue) can represent 1024 intensity levels. With 10 bits per channel and 3 channels, the total number of colors is:</p>
+<p> = 1024^3 = 1,073,741,824</p>
 </div>
 <hr>
 <p>title: “task 2”</p>
@@ -291,7 +296,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 <div class="answer">
 <p>The first step is to find the values of <span class="math inline">\(c\)</span> for both cases. Since <span class="math inline">\(\max(f) = \max(g) = 255\)</span>, we have <span class="math inline">\(c = 255 / 255^\gamma\)</span>.</p>
-<div id="04b29e94" class="cell" data-execution_count="3">
+<div id="a4ef0b2c" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
@@ -359,7 +364,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <li>For a grey value spread, the minimum slope of the transform function should be 1.</li>
 <li>For a grey value compression, the minimum slope of the transform function should be 0 (and smaller than 1). For instance, in this function:</li>
 </ol>
-<div id="00f488af" class="cell" data-execution_count="4">
+<div id="658ff1a0" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -381,7 +386,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Read the greyscale image brain.png, which is provided on the lecture homepage. Reduce the salt and pepper noise in the image using a median filter. (3pts)</p>
 </div>
 <div class="answer">
-<div id="5a7599ca" class="cell" data-execution_count="5">
+<div id="3e3abf9e" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
@@ -427,7 +432,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p><strong>Otsu</strong> thresholding is a histogram-based method for image segmentation. Use it to find an intensity threshold to segment brain pixels from background. Use Otsu thresholding again to find the threshold only over the brain pixels to segment brain’s grey matter from the white matter. Using the two thresholds create three binary masks brain-bg.png, brain-gm.png, brain-wm.png, which should be white in regions of background, grey matter, and white matter, respectively, and black elsewhere. (4pts)</p>
 </div>
 <div class="answer">
-<div id="1faf6eaf" class="cell" data-execution_count="6">
+<div id="06c38c10" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>values, bin_edge <span class="op">=</span> np.histogram(img, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="dv">0</span>, <span class="dv">256</span>))</span>
@@ -450,7 +455,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 </div>
 <p>The correct way to use Otsu thresholding with several values is to use <span class="citation" data-cites="arora2008multilevel">(<a href="#ref-arora2008multilevel" role="doc-biblioref">Arora et al. 2008</a>)</span>, which is not implemented in OpenCV. However, we can use the implementation in the <code>skimage</code> library (which implemented based on <span class="citation" data-cites="liao2001fast">(<a href="#ref-liao2001fast" role="doc-biblioref">Liao et al. 2001</a>)</span>)</p>
-<div id="eb2f2d0f" class="cell" data-execution_count="7">
+<div id="789f088f" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimage.filters <span class="im">import</span> threshold_multiotsu</span>
@@ -476,7 +481,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>(brain_bg, brain_gm, brain_wm), threshold <span class="op">=</span> otsu_threshold(img, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="2a7cf399" class="cell" data-execution_count="8">
+<div id="de3449a9" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"r"</span>, <span class="st">"g"</span>, <span class="st">"y"</span>]</span>
@@ -507,7 +512,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 </div>
 </div>
-<div id="f39d438b" class="cell" data-execution_count="9">
+<div id="c074e08b" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
@@ -542,7 +547,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Plot a log-scaled histogram of the image, which should show how frequently different intensity values occur in the image. How could you roughly estimate the two thresholds you found in the previous task just by looking at the histogram? (3pts)</p>
 </div>
 <div class="answer">
-<div id="04c760b1" class="cell" data-execution_count="10">
+<div id="2c79f592" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>values, bin_edge <span class="op">=</span> np.histogram(img, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="dv">0</span>, <span class="dv">256</span>))</span>
@@ -571,7 +576,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Combine the three masks into a single colour image so that background, grey matter, and white matter are mapped to red, green and blue, respectively. (3pts)</p>
 </div>
 <div class="answer">
-<div id="a000f219" class="cell" data-execution_count="11">
+<div id="f769b231" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>combined_brain <span class="op">=</span> np.stack([brain_bg, brain_gm, brain_wm], axis<span class="op">=-</span><span class="dv">1</span>).astype(np.uint8) <span class="op">*</span> <span class="dv">255</span></span>
@@ -593,7 +598,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Use erosion (or any other morphological) filter to produce a border between the grey and white matter. Overlay that border on the denoised input image. (3pts)</p>
 </div>
 <div class="answer">
-<div id="f8345188" class="cell" data-execution_count="12">
+<div id="5828c8f1" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>kernel <span class="op">=</span> np.ones((<span class="dv">3</span>, <span class="dv">3</span>), np.uint8)</span>
@@ -623,7 +628,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Use bilinear interpolation to up-sample the image by a factor of four along each axis. Apply the same thresholds as in 2) to obtain a segmentation into background, grey matter, and white matter. Up-sample the masks from 2) in the same way and compare the up-sampled masks to the masks from the up-sampled image. Can you see a diference? Why? Repeat the same procedure using nearest neighbour interpolation. Can you see a diference now? (4pts)</p>
 </div>
 <div class="answer">
-<div id="d39cff72" class="cell" data-execution_count="13">
+<div id="8dd6d58e" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upsample(img: np.ndarray, factor: <span class="bu">int</span>, interpolation: <span class="bu">int</span>) <span class="op">-&gt;</span> np.ndarray:</span>
@@ -669,7 +674,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 <p>Clearly, we can see much smoother edges in the upsampled masks compared to the upsampled image. This is because the interpolation method used in the up-sampling process is linear, which smooths the edges.</p>
 <p>Now, let’s repeat the same procedure using the nearest neighbour interpolation method.</p>
-<div id="c90e1633" class="cell" data-execution_count="14">
+<div id="3c9eeea4" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>masks, threshold <span class="op">=</span> otsu_threshold(img, <span class="dv">3</span>)</span>
@@ -709,7 +714,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 <p>We can see the edges are much sharper in the upsampled masks compared to the upsampled image. This is because the nearest neighbour interpolation method does not smooth the edges.</p>
 <p>TODO: Test same thing with pyrUp</p>
-<div id="1eb421f8" class="cell" data-execution_count="15">
+<div id="6e8f9616" class="cell" data-execution_count="15">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upsample_pyramid_(img: np.ndarray) <span class="op">-&gt;</span> np.ndarray:</span>
@@ -755,9 +760,109 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 </div>
 </div>
+<hr>
+<p>title: “Task 4”</p>
+<hr>
+</section>
+<section id="task-4" class="level1">
+<h1>Task 4</h1>
+<section id="data-handling-and-preprocessing-10-points" class="level2">
+<h2 class="anchored" data-anchor-id="data-handling-and-preprocessing-10-points">Data Handling and Preprocessing (10 Points)</h2>
+<div class="question">
+<ol type="a">
+<li>You can focus for now on loading the T1-weighted images and the matching labels.</li>
+<li>Create a dataloader for the data using PyTorch’s Dataloader (or Monai’s Dataloader class)</li>
+<li>Create suitable augmentations for the task to solve. Please note: If you apply transformations to the input data, you should think about if you need to apply any transformation to the label of the image as well.</li>
+</ol>
+</div>
+<div class="answer">
+<p>We didnt used Monai’s Dataloader class, because we wanted to use the data in the HPC. The dataset implementation is availabel in the <code>task4/brats_segmentations/dataloader.py</code></p>
+<div class="hscroll">
+<div id="137e7680" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-stdout">
+<pre><code>file name: task4/brats_segmentation/dataloader.py</code></pre>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BraTSDataset(Dataset):</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Custom PyTorch Dataset for BraTS data.</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, base_path: <span class="bu">str</span> <span class="op">|</span> os.PathLike, transform<span class="op">=</span><span class="va">None</span>, limit<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">            base_path (str): Path to the dataset directory.</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">            transform (callable, optional): Optional transform to be applied on a sample.</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        all_patients <span class="op">=</span> <span class="bu">list</span>(glob.glob(os.path.join(base_path, <span class="st">"BraTS*"</span>)))</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> all_patients:</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"No patients found in </span><span class="sc">{</span>base_path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(all_patients)<span class="sc">}</span><span class="ss"> patients in </span><span class="sc">{</span>base_path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> limit:</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.patient_dirs <span class="op">=</span> all_patients[:limit]  <span class="co"># Limit to 20 patients for now</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.patient_dirs <span class="op">=</span> all_patients</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.transform <span class="op">=</span> transform</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>.patient_dirs)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__getitem__</span>(</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, idx</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> <span class="bu">dict</span>[Literal[<span class="st">"t1"</span>, <span class="st">"t1ce"</span>, <span class="st">"t2"</span>, <span class="st">"flair"</span>, <span class="st">"label"</span>], np.ndarray]:</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="co">        Load data and labels for a given patient.</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>        patient_dir <span class="op">=</span> <span class="va">self</span>.patient_dirs[idx]</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>        sample <span class="op">=</span> {}</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Load the four MRI modalities</span></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>        modalities <span class="op">=</span> [<span class="st">"t1"</span>, <span class="st">"t1ce"</span>, <span class="st">"t2"</span>, <span class="st">"flair"</span>]</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>        modalities <span class="op">=</span> [<span class="st">"t1"</span>]</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(patient_dir)</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> modality <span class="kw">in</span> modalities:</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>            file_path <span class="op">=</span> os.path.join(</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>                patient_dir, <span class="ss">f"</span><span class="sc">{</span>os<span class="sc">.</span>path<span class="sc">.</span>basename(patient_dir)<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>modality<span class="sc">}</span><span class="ss">.nii.gz"</span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>            <span class="co"># sample[modality] = nib.load(file_path).get_fdata()</span></span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>            sample[modality] <span class="op">=</span> file_path</span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Load the segmentation label</span></span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>        label_path <span class="op">=</span> os.path.join(</span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>            patient_dir, <span class="ss">f"</span><span class="sc">{</span>os<span class="sc">.</span>path<span class="sc">.</span>basename(patient_dir)<span class="sc">}</span><span class="ss">_seg.nii.gz"</span></span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sample["label"] = nib.load(label_path).get_fdata()</span></span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>        sample[<span class="st">"label"</span>] <span class="op">=</span> label_path</span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.transform:</span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>            <span class="co"># for modality in modalities:</span></span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>            <span class="co">#     sample[modality] = self.transform(sample[modality])</span></span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>            sample_ <span class="op">=</span> {}</span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>            sample_[<span class="st">"image"</span>] <span class="op">=</span> sample[<span class="st">"t1"</span>]</span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>            sample_[<span class="st">"label"</span>] <span class="op">=</span> sample[<span class="st">"label"</span>]</span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(sample_)</span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a>            sample <span class="op">=</span> <span class="va">self</span>.transform(sample_)</span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> sample</span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<style>
+.hscroll {
+    overflow-x: auto;
+    white-space: nowrap;
+    max-height: 500px;
+}
+</style>
+</div>
+</div>
 
 
 
+</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
