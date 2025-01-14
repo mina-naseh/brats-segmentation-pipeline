@@ -60,7 +60,7 @@ Total bits per pixel: $b = `{python} bc` \times `{python} (channel_count:=3)` = 
 
 The memory requirement is the product of the number of pixels and bits per pixel:
 $$
-\text{Used Memory} = N_{\text{pixels}} \cdot b = (`{python} Np` \cdot L_x \cdot L_y) \cdot b \, \text{bits} = `{python} Np/8` \cdot L_x \cdot L_y \cdot `{python} b` \, \text{bytes} = `{python} Np*b/8` \cdot L_x \cdot L_y \text bytes
+\text{Used Memory} = N_{\text{pixels}} \cdot b = (`{python} Np` \cdot L_x \cdot L_y) \cdot b \, \text{bits} = `{python} Np/8` \cdot L_x \cdot L_y \cdot `{python} b` \, \text{bytes} = `{python} Np*b/8` \cdot L_x \cdot L_y \, \text{bytes}
 $$
 
 :::
