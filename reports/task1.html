@@ -150,11 +150,11 @@ window.Quarto = {
 <ul>
 <li><p>Sampling frequency in x is <span class="math inline">\(f_{sx}\)</span> and the Nyquist frequency in x is <span class="math inline">\(f_{umax}\)</span>: <span class="math display">\[\begin{align*}
   &amp;f_{sx} = 20\;\text{points/mm} = 20 \times 10^3 \, \text{points/m} \\
-  \implies &amp;f_{umax} = \frac{f_{sx}}{2} = 10.0 \, \text{kHz}
+  \implies &amp;f_{umax} = \frac{f_{sx}}{2} = 10.0 \, \text{cycles/mm}
 \end{align*}\]</span></p></li>
 <li><p>Sampling frequency in y is <span class="math inline">\(f_{sy}\)</span> and the Nyquist frequency in y is <span class="math inline">\(f_{vmax}\)</span>: <span class="math display">\[\begin{align*}
   &amp;f_{sy} = 10 \, \text{points/mm} = 10 \times 10^3 \, \text{points/m} \\
-  \implies &amp;f_{vmax} = \frac{f_{sy}}{2} = 5.0 \, \text{kHz}
+  \implies &amp;f_{vmax} = \frac{f_{sy}}{2} = 5.0 \, \text{cycles/mm}
 \end{align*}\]</span></p></li>
 </ul>
 <p>This ensures error-free reconstruction, as the digital image will contain all frequency components of the original image within the Nyquist limit. Frequencies above these limits would result in aliasing, violating error-free reconstruction conditions.</p>
@@ -171,9 +171,8 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Each pixel in a color image has values for three color channels: Red, Green, and Blue (RGB). Each channel can store <span class="math inline">\(1024\)</span> distinct values, which means <span class="math inline">\(log_2^{1024} = 10.0\)</span> bits per channel.</p>
 <p>Total bits per pixel: <span class="math inline">\(b = 10.0 \times 3 = 30.0\)</span> bits/pixel.</p>
 <p>The memory requirement is the product of the number of pixels and bits per pixel: <span class="math display">\[
-\text{Used Memory} = N_{\text{pixels}} \cdot b = (50.0 \cdot L_x \cdot L_y) \cdot b \, \text{bits} = 6.25 \cdot L_x \cdot L_y \cdot 30.0 \, \text{bytes}
+\text{Used Memory} = N_{\text{pixels}} \cdot b = (50.0 \cdot L_x \cdot L_y) \cdot b \, \text{bits} = 6.25 \cdot L_x \cdot L_y \cdot 30.0 \, \text{bytes} = 187.5 \cdot L_x \cdot L_y \text bytes
 \]</span></p>
-<p>TODO: Im not sure about the answer, I think it should not depend on <span class="math inline">\(L_x\)</span> and <span class="math inline">\(L_y\)</span>.</p>
 </div>
 <div class="question">
 <p>How many colors could be represented with the quantization chosen in sub-task 3? (2pts)</p>
