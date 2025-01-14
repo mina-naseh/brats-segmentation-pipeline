@@ -82,8 +82,9 @@ It's important to note that a slope of exactly 1 implies no change in contrast, 
 1. For a grey value spread, the minimum slope of the transform function should be 1.
 2. For a grey value compression, the minimum slope of the transform function should be 0 (and smaller than 1).
 For instance, in this function:
+
 ```{python}
-# | echo: False
+#| echo: false
 
 x = [0, 80, 160, 255]
 y = [0, 40, 200, 255]
@@ -99,7 +100,7 @@ for x_, y_ in zip(x, y):
 for (x_, y_), (x__, y__) in zip(zip(x, y), zip(x[1:], y[1:])):
     slope = (y__ - y_) / (x__ - x_)
     plt.text((x_ + x__) / 2, (y_ + y__) / 2, f"s={slope:.2f}")
-    if 0 < slope < 1:
+    if 0 < slope < 1:    
         compress_range = [(x_, x__), (y_, y__)]
     elif slope > 1:
         spread_range = [(x_, x__), (y_, y__)]
@@ -113,6 +114,6 @@ plt.ylim(0, 255)
 plt.legend()
 plt.show()
 ```
-
 As we can see, the gray values between `{python} spread_range[0]` are streched between `{python} spread_range[1]` which has a slope greater than 1. On the other hand, the gray values between `{python} compress_range[0]` are compressed between `{python} compress_range[1]` which has a slope smaller than 1.
+
 :::
