@@ -1,0 +1,9 @@
+wandb: Currently logged in as: mina-naseh (KaMiPa). Use `wandb login --relogin` to force relogin
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+wandb: Tracking run with wandb version 0.19.4
+wandb: Run data is saved locally in /mnt/aiongpfs/users/mnaseh/brats-segmentation-pipeline/task4/brats_segmentation/wandb/run-20250119_190734-z5ll64lc
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run olive-sunset-21
+wandb: ⭐️ View project at https://wandb.ai/KaMiPa/brats_segmentation
+wandb: 🚀 View run at https://wandb.ai/KaMiPa/brats_segmentation/runs/z5ll64lc
+slurmstepd: error: *** JOB 3813584 ON iris-070 CANCELLED AT 2025-01-19T19:22:35 DUE TO TIME LIMIT ***

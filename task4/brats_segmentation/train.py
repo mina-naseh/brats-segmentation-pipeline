@@ -16,7 +16,7 @@ def train():
         "batch_size": 2,
         "epochs": 50,
         "learning_rate": 1e-4,
-        "num_workers": 4,
+        "num_workers": 0,
         "split_dir": "./splits/split1",
         "data_dir": "/work/projects/ai_imaging_class/dataset",
         "early_stop_limit": 10,
@@ -88,12 +88,17 @@ def train():
 
         train_batch_dice_scores = dice_metric.aggregate()
         dice_metric.reset()
+        print(f"Train Dice Scores: {train_batch_dice_scores}")
+         
 
         # Log per-class Dice scores for training
-        wandb.log({
-            **{f"train_dice_class_{i}": score.item() for i, score in enumerate(train_batch_dice_scores)},
-            "train_loss": epoch_loss / len(train_loader)
-        })
+        train_metrics = {
+            f"train_dice_class_{i}": score.item() for i, score in enumerate(train_batch_dice_scores)
+        }
+        train_metrics["train_loss"] = epoch_loss / len(train_loader)
+        train_metrics["epoch"] = epoch
+        wandb.log(train_metrics)
+
 
         # Validation step
         model.eval()
@@ -127,14 +132,19 @@ def train():
                     wandb.log({"examples": examples})
 
             dice_scores = dice_metric.aggregate()  # Tensor with per-class scores
+            print(f"Validation Dice Scores: {dice_scores}")
             mean_dice = dice_scores.mean().item()
             dice_metric.reset()
 
-            wandb.log({
-                **{f"val_dice_class_{i}": score.item() for i, score in enumerate(dice_scores)},
-                "val_mean_dice": mean_dice,
-                "val_loss": val_loss / len(val_loader)
-            })
+            # Log validation metrics
+            val_metrics = {
+                f"val_dice_class_{i}": score.item() for i, score in enumerate(dice_scores)
+            }
+            val_metrics["val_mean_dice"] = mean_dice
+            val_metrics["val_loss"] = val_loss / len(val_loader)
+            val_metrics["epoch"] = epoch
+            wandb.log(val_metrics)
+
 
         # Save the model if validation Dice improves
         if mean_dice > best_dice:
