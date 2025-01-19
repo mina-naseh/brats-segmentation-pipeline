@@ -13,69 +13,56 @@ import numpy as np
 from monai import transforms
 
 
-class BraTSDataset(Dataset):
+from monai.data import CacheDataset, Dataset
+from monai.transforms import Compose, LoadImaged, EnsureChannelFirstd
+
+class BraTSDataset:
     """
-    Custom PyTorch Dataset for BraTS data.
+    Wrapper to create a MONAI-compatible dataset for BraTS data.
     """
 
-    def __init__(self, base_path: str | os.PathLike, transform=None, limit=None):
+    def __init__(self, base_path: str, transform=None, limit=None, cache_rate=0.5, num_workers=4):
         """
         Args:
             base_path (str): Path to the dataset directory.
-            transform (callable, optional): Optional transform to be applied on a sample.
+            transform (callable, optional): Transformations to be applied on the samples.
+            limit (int, optional): Limit the number of patient directories to load.
+            cache_rate (float, optional): Fraction of data to cache in memory (default: 0.5).
+            num_workers (int, optional): Number of workers for caching (default: 4).
         """
-
         all_patients = list(glob.glob(os.path.join(base_path, "BraTS*")))
         if not all_patients:
             raise ValueError(f"No patients found in {base_path}")
         else:
             print(f"Found {len(all_patients)} patients in {base_path}")
-        if limit:
-            self.patient_dirs = all_patients[:limit]  # Limit to 20 patients for now
-        self.patient_dirs = all_patients
 
-        self.transform = transform
+        if limit:
+            all_patients = all_patients[:limit]
+
+        # Prepare the data dictionary
+        self.data_dict = [
+            {
+                "image": [
+                    os.path.join(patient, f"{os.path.basename(patient)}_{modality}.nii.gz")
+                    for modality in ["t1", "t1ce", "t2", "flair"]
+                ],
+                "label": os.path.join(patient, f"{os.path.basename(patient)}_seg.nii.gz"),
+            }
+            for patient in all_patients
+        ]
+
+        # Use MONAI's CacheDataset or Dataset
+        self.dataset = CacheDataset(
+            data=self.data_dict, transform=transform, cache_rate=cache_rate, num_workers=num_workers
+        )
 
     def __len__(self):
-        return len(self.patient_dirs)
+        return len(self.dataset)
 
-    def __getitem__(
-        self, idx
-    ) -> dict[Literal["t1", "t1ce", "t2", "flair", "label"], np.ndarray]:
-        """
-        Load data and labels for a given patient.
-        """
-        patient_dir = self.patient_dirs[idx]
-        sample = {}
+    def __getitem__(self, idx):
+        return self.dataset[idx]
 
-        # Load the four MRI modalities
-        modalities = ["t1", "t1ce", "t2", "flair"]
-        modalities = ["t1"]
-        print(patient_dir)
-        for modality in modalities:
-            file_path = os.path.join(
-                patient_dir, f"{os.path.basename(patient_dir)}_{modality}.nii.gz"
-            )
-            # sample[modality] = nib.load(file_path).get_fdata()
-            sample[modality] = file_path
 
-        # Load the segmentation label
-        label_path = os.path.join(
-            patient_dir, f"{os.path.basename(patient_dir)}_seg.nii.gz"
-        )
-        # sample["label"] = nib.load(label_path).get_fdata()
-        sample["label"] = label_path
-
-        if self.transform:
-            # for modality in modalities:
-            #     sample[modality] = self.transform(sample[modality])
-            sample_ = {}
-            sample_["image"] = sample["t1"]
-            sample_["label"] = sample["label"]
-            print(sample_)
-            sample = self.transform(sample_)
-
-        return sample
 
 
 # >> END <<
