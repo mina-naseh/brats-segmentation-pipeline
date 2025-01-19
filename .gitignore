@@ -15,9 +15,12 @@ __pycache__/
 *.pyw
 *.pyz
 *.pywz
-task4/tests/__pycache__/
-task4/src/brats_segmentation/__pycache__/
+
+task4/brats_segmentation/__pycache__
 task4/.pytest_cache/
 
 dataset_sample/
 dataset_sample.tar.gz
+
+/task4/brats_segmentation/wandb/
+wandb/
