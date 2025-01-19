@@ -178,7 +178,7 @@ window.Quarto = {
 <p>Read the greyscale image brain.png, which is provided on the lecture homepage. Reduce the salt and pepper noise in the image using a median filter. (3pts)</p>
 </div>
 <div class="answer">
-<div id="9fb89137" class="cell" data-execution_count="1">
+<div id="5fe3c802" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
@@ -221,7 +221,7 @@ window.Quarto = {
 <p><strong>Otsu</strong> thresholding is a histogram-based method for image segmentation. Use it to find an intensity threshold to segment brain pixels from background. Use Otsu thresholding again to find the threshold only over the brain pixels to segment brain’s grey matter from the white matter. Using the two thresholds create three binary masks brain-bg.png, brain-gm.png, brain-wm.png, which should be white in regions of background, grey matter, and white matter, respectively, and black elsewhere. (4pts)</p>
 </div>
 <div class="answer">
-<div id="d4a59064" class="cell" data-execution_count="2">
+<div id="fe8b87ef" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>values, bin_edge <span class="op">=</span> np.histogram(img, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="dv">0</span>, <span class="dv">256</span>))</span>
@@ -244,7 +244,7 @@ window.Quarto = {
 </div>
 </div>
 <p>The correct way to use Otsu thresholding with several values is to use <span class="citation" data-cites="arora2008multilevel">[@arora2008multilevel]</span>, which is not implemented in OpenCV. However, we can use the implementation in the <code>skimage</code> library (which implemented based on <span class="citation" data-cites="liao2001fast">[@liao2001fast]</span>)</p>
-<div id="2c8ace5f" class="cell" data-execution_count="3">
+<div id="c7cc0a7a" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimage.filters <span class="im">import</span> threshold_multiotsu</span>
@@ -270,7 +270,7 @@ window.Quarto = {
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>(brain_bg, brain_gm, brain_wm), threshold <span class="op">=</span> otsu_threshold(img, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="f8ac43f4" class="cell" data-execution_count="4">
+<div id="7986a0b8" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"r"</span>, <span class="st">"g"</span>, <span class="st">"y"</span>]</span>
@@ -301,7 +301,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="cd829d34" class="cell" data-execution_count="5">
+<div id="a4ebc83f" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
@@ -336,7 +336,7 @@ window.Quarto = {
 <p>Plot a log-scaled histogram of the image, which should show how frequently different intensity values occur in the image. How could you roughly estimate the two thresholds you found in the previous task just by looking at the histogram? (3pts)</p>
 </div>
 <div class="answer">
-<div id="cdae3367" class="cell" data-execution_count="6">
+<div id="68a38bbe" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>values, bin_edge <span class="op">=</span> np.histogram(img, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="dv">0</span>, <span class="dv">256</span>))</span>
@@ -365,7 +365,7 @@ window.Quarto = {
 <p>Combine the three masks into a single colour image so that background, grey matter, and white matter are mapped to red, green and blue, respectively. (3pts)</p>
 </div>
 <div class="answer">
-<div id="bdd29a2e" class="cell" data-execution_count="7">
+<div id="4d87bd8d" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>combined_brain <span class="op">=</span> np.stack([brain_bg, brain_gm, brain_wm], axis<span class="op">=-</span><span class="dv">1</span>).astype(np.uint8) <span class="op">*</span> <span class="dv">255</span></span>
@@ -387,7 +387,7 @@ window.Quarto = {
 <p>Use erosion (or any other morphological) filter to produce a border between the grey and white matter. Overlay that border on the denoised input image. (3pts)</p>
 </div>
 <div class="answer">
-<div id="e3469bb5" class="cell" data-execution_count="8">
+<div id="78372f7e" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>kernel <span class="op">=</span> np.ones((<span class="dv">3</span>, <span class="dv">3</span>), np.uint8)</span>
@@ -417,7 +417,7 @@ window.Quarto = {
 <p>Use bilinear interpolation to up-sample the image by a factor of four along each axis. Apply the same thresholds as in 2) to obtain a segmentation into background, grey matter, and white matter. Up-sample the masks from 2) in the same way and compare the up-sampled masks to the masks from the up-sampled image. Can you see a diference? Why? Repeat the same procedure using nearest neighbour interpolation. Can you see a diference now? (4pts)</p>
 </div>
 <div class="answer">
-<div id="5ac77285" class="cell" data-execution_count="9">
+<div id="af6402b0" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upsample(img: np.ndarray, factor: <span class="bu">int</span>, interpolation: <span class="bu">int</span>) <span class="op">-&gt;</span> np.ndarray:</span>
@@ -463,7 +463,7 @@ window.Quarto = {
 </div>
 <p>Clearly, we can see much smoother edges in the upsampled masks compared to the upsampled image. This is because the interpolation method used in the up-sampling process is linear, which smooths the edges.</p>
 <p>Now, let’s repeat the same procedure using the nearest neighbour interpolation method.</p>
-<div id="f5d680a7" class="cell" data-execution_count="10">
+<div id="9498d55a" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>masks, threshold <span class="op">=</span> otsu_threshold(img, <span class="dv">3</span>)</span>
@@ -503,7 +503,7 @@ window.Quarto = {
 </div>
 <p>We can see the edges are much sharper in the upsampled masks compared to the upsampled image. This is because the nearest neighbour interpolation method does not smooth the edges.</p>
 <p>TODO: Test same thing with pyrUp</p>
-<div id="b75e580d" class="cell" data-execution_count="11">
+<div id="e1232766" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upsample_pyramid_(img: np.ndarray) <span class="op">-&gt;</span> np.ndarray:</span>
