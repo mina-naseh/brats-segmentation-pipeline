@@ -1,0 +1,16 @@
+[
+  {
+    "t1": "/work/projects/ai_imaging_class/dataset/BraTS2021_00549/BraTS2021_00549_t1.nii.gz",
+    "t1ce": "/work/projects/ai_imaging_class/dataset/BraTS2021_00549/BraTS2021_00549_t1ce.nii.gz",
+    "t2": "/work/projects/ai_imaging_class/dataset/BraTS2021_00549/BraTS2021_00549_t2.nii.gz",
+    "flair": "/work/projects/ai_imaging_class/dataset/BraTS2021_00549/BraTS2021_00549_flair.nii.gz",
+    "label": "/work/projects/ai_imaging_class/dataset/BraTS2021_00549/BraTS2021_00549_seg.nii.gz"
+  },
+  {
+    "t1": "/work/projects/ai_imaging_class/dataset/BraTS2021_00312/BraTS2021_00312_t1.nii.gz",
+    "t1ce": "/work/projects/ai_imaging_class/dataset/BraTS2021_00312/BraTS2021_00312_t1ce.nii.gz",
+    "t2": "/work/projects/ai_imaging_class/dataset/BraTS2021_00312/BraTS2021_00312_t2.nii.gz",
+    "flair": "/work/projects/ai_imaging_class/dataset/BraTS2021_00312/BraTS2021_00312_flair.nii.gz",
+    "label": "/work/projects/ai_imaging_class/dataset/BraTS2021_00312/BraTS2021_00312_seg.nii.gz"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "t1": "/work/projects/ai_imaging_class/dataset/BraTS2021_01426/BraTS2021_01426_t1.nii.gz",
+    "t1ce": "/work/projects/ai_imaging_class/dataset/BraTS2021_01426/BraTS2021_01426_t1ce.nii.gz",
+    "t2": "/work/projects/ai_imaging_class/dataset/BraTS2021_01426/BraTS2021_01426_t2.nii.gz",
+    "flair": "/work/projects/ai_imaging_class/dataset/BraTS2021_01426/BraTS2021_01426_flair.nii.gz",
+    "label": "/work/projects/ai_imaging_class/dataset/BraTS2021_01426/BraTS2021_01426_seg.nii.gz"
+  },
+  {
+    "t1": "/work/projects/ai_imaging_class/dataset/BraTS2021_00207/BraTS2021_00207_t1.nii.gz",
+    "t1ce": "/work/projects/ai_imaging_class/dataset/BraTS2021_00207/BraTS2021_00207_t1ce.nii.gz",
+    "t2": "/work/projects/ai_imaging_class/dataset/BraTS2021_00207/BraTS2021_00207_t2.nii.gz",
+    "flair": "/work/projects/ai_imaging_class/dataset/BraTS2021_00207/BraTS2021_00207_flair.nii.gz",
+    "label": "/work/projects/ai_imaging_class/dataset/BraTS2021_00207/BraTS2021_00207_seg.nii.gz"
+  },
+  {
+    "t1": "/work/projects/ai_imaging_class/dataset/BraTS2021_00640/BraTS2021_00640_t1.nii.gz",
+    "t1ce": "/work/projects/ai_imaging_class/dataset/BraTS2021_00640/BraTS2021_00640_t1ce.nii.gz",
+    "t2": "/work/projects/ai_imaging_class/dataset/BraTS2021_00640/BraTS2021_00640_t2.nii.gz",
+    "flair": "/work/projects/ai_imaging_class/dataset/BraTS2021_00640/BraTS2021_00640_flair.nii.gz",
+    "label": "/work/projects/ai_imaging_class/dataset/BraTS2021_00640/BraTS2021_00640_seg.nii.gz"
+  },
+  {
+    "t1": "/work/projects/ai_imaging_class/dataset/BraTS2021_01050/BraTS2021_01050_t1.nii.gz",
+    "t1ce": "/work/projects/ai_imaging_class/dataset/BraTS2021_01050/BraTS2021_01050_t1ce.nii.gz",
+    "t2": "/work/projects/ai_imaging_class/dataset/BraTS2021_01050/BraTS2021_01050_t2.nii.gz",
+    "flair": "/work/projects/ai_imaging_class/dataset/BraTS2021_01050/BraTS2021_01050_flair.nii.gz",
+    "label": "/work/projects/ai_imaging_class/dataset/BraTS2021_01050/BraTS2021_01050_seg.nii.gz"
+  },
+  {
+    "t1": "/work/projects/ai_imaging_class/dataset/BraTS2021_01215/BraTS2021_01215_t1.nii.gz",
+    "t1ce": "/work/projects/ai_imaging_class/dataset/BraTS2021_01215/BraTS2021_01215_t1ce.nii.gz",
+    "t2": "/work/projects/ai_imaging_class/dataset/BraTS2021_01215/BraTS2021_01215_t2.nii.gz",
+    "flair": "/work/projects/ai_imaging_class/dataset/BraTS2021_01215/BraTS2021_01215_flair.nii.gz",
+    "label": "/work/projects/ai_imaging_class/dataset/BraTS2021_01215/BraTS2021_01215_seg.nii.gz"
+  }
+]

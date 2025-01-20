@@ -38,7 +38,7 @@ def sample_split_files(input_dir, output_dir, fraction=0.1, seed=42):
 
 if __name__ == "__main__":
     input_split_dir = "./splits/split1"
-    output_split_dir = "./splits/split2"
-    sample_fraction = 0.1  # Choose 1/10th of the data
+    output_split_dir = "./splits/split3"
+    sample_fraction = 1/50  # Choose 1/50th of the data
 
     sample_split_files(input_split_dir, output_split_dir, fraction=sample_fraction)
