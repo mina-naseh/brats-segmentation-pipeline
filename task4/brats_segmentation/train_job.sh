@@ -2,11 +2,12 @@
 
 #SBATCH --job-name=brats_train       
 #SBATCH --output=logs/%x_%j.out      
-#SBATCH --error=logs/%x_%j.err       
-          
+#SBATCH --error=logs/%x_%j.err          
 #SBATCH --cpus-per-task=1            
-#SBATCH --mem=24G                    
-#SBATCH --time=00:30:00             
+#SBATCH -G 1
+#SBATCH --time=48:00:00
+#SBATCH --mem=32G
+#SBATCH -p gpu
 
 
 # module load lang/Python

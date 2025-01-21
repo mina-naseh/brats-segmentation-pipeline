@@ -31,6 +31,9 @@ class ConvertToMultiChannelBasedOnBratsClassesd(MapTransform):
     def __call__(self, data):
         d = dict(data)
         for key in self.keys:
+            # This is for optimization
+            if key != "label":
+                continue
             print(
                 f"Original label shape: {d[key].shape}, unique values: {torch.unique(d[key])}"
             )
@@ -57,7 +60,7 @@ class ConvertToMultiChannelBasedOnBratsClassesd(MapTransform):
             # print(f"Enhancing Tumor (ET) unique values: {torch.unique(et)}")
 
             # Stack binary masks into multi-channel format
-            d[key] = torch.stack(result, dim=0).float()
+            d[key] = torch.stack(result, dim=0).float().squeeze(1)
             # print(
             #     f"Transformed label shape: {d[key].shape}, unique values: {torch.unique(d[key])}"
             # )
@@ -237,7 +240,7 @@ if __name__ == "__main__":
     split_dir = "./splits/split3"
     roi_size = (128, 128, 128)
     batch_size = 1
-    num_workers = 4
+    num_workers = 1
 
     train_loader, val_loader, test_loader = get_dataloaders(
         split_dir, roi_size, batch_size, num_workers
@@ -251,6 +254,6 @@ if __name__ == "__main__":
         print(f"Label unique values: {torch.unique(batch['label'])}")
         break
 
-    # Visualize samples using Weights & Biases
-    print("Visualizing samples with W&B...")
-    visualize_samples(train_loader)
+    # # Visualize samples using Weights & Biases
+    # print("Visualizing samples with W&B...")
+    # visualize_samples(train_loader)
