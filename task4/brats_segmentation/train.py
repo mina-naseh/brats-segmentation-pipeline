@@ -10,19 +10,23 @@ from monai.data import decollate_batch
 from dataloader import get_dataloaders
 import wandb
 
+
 def train():
     # Initialize W&B
-    wandb.init(project="brats_segmentation", config={
-        "roi_size": [128, 128, 128],
-        "batch_size": 1,
-        "epochs": 10,
-        "learning_rate": 1e-3,
-        "num_workers": 0,
-        "split_dir": "./splits/split3",
-        "data_dir": "/work/projects/ai_imaging_class/dataset",
-        "early_stop_limit": 10,
-        "save_path": "models"
-    })
+    wandb.init(
+        project="brats_segmentation",
+        config={
+            "roi_size": [128, 128, 128],
+            "batch_size": 4,
+            "epochs": 50,
+            "learning_rate": 1e-3,
+            "num_workers": 1,
+            "split_dir": "./splits/split3",
+            "data_dir": "/work/projects/ai_imaging_class/dataset",
+            "early_stop_limit": 10,
+            "save_path": "models",
+        },
+    )
     config = wandb.config
 
     # Load dataloaders
@@ -30,7 +34,7 @@ def train():
         split_dir=config.split_dir,
         roi_size=config.roi_size,
         batch_size=config.batch_size,
-        num_workers=config.num_workers
+        num_workers=config.num_workers,
     )
 
     # Initialize model, loss, optimizer
@@ -47,7 +51,9 @@ def train():
     optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
 
     # Initialize metrics
-    dice_metric = DiceMetric(include_background=False, reduction="mean", get_not_nans=True)
+    dice_metric = DiceMetric(
+        include_background=False, reduction="mean", get_not_nans=True
+    )
     # post_transform = Compose([
     #     Activations(softmax=True),
     #     AsDiscrete(argmax=True)
@@ -71,6 +77,7 @@ def train():
 
             optimizer.zero_grad()
             outputs = model(inputs)
+            print(outputs.shape, labels.shape)
             loss = loss_function(outputs, labels)
             loss.backward()
             optimizer.step()
@@ -84,10 +91,15 @@ def train():
         dice_scores = dice_scores.cpu().numpy()
         dice_metric.reset()
 
-        wandb.log({
-            "train_loss": epoch_loss / len(train_loader),
-            **{f"train_dice_class_{i}": score for i, score in enumerate(dice_scores)},
-        })
+        wandb.log(
+            {
+                "train_loss": epoch_loss / len(train_loader),
+                **{
+                    f"train_dice_class_{i}": score
+                    for i, score in enumerate(dice_scores)
+                },
+            }
+        )
 
         # Validation step
         model.eval()
@@ -96,7 +108,9 @@ def train():
 
         with torch.no_grad():
             for val_batch in val_loader:
-                val_inputs, val_labels = val_batch["image"].to(device), val_batch["label"].to(device)
+                val_inputs, val_labels = val_batch["image"].to(device), val_batch[
+                    "label"
+                ].to(device)
 
                 # Perform sliding window inference
                 val_outputs = sliding_window_inference(
@@ -104,14 +118,16 @@ def train():
                     roi_size=config.roi_size,
                     sw_batch_size=1,
                     predictor=model,
-                    overlap=0.5
+                    overlap=0.5,
                 )
 
                 # Post-process predictions
                 # val_outputs = post_transform(val_outputs)
 
                 # Ensure shape compatibility
-                assert val_outputs.shape == val_labels.shape, f"Shape mismatch: {val_outputs.shape} vs {val_labels.shape}"
+                assert (
+                    val_outputs.shape == val_labels.shape
+                ), f"Shape mismatch: {val_outputs.shape} vs {val_labels.shape}"
 
                 # Update Dice metric
                 val_outputs_decoupled = decollate_batch(val_outputs)
@@ -132,20 +148,23 @@ def train():
         dice_scores = dice_scores.cpu().numpy()
         mean_dice = dice_scores.mean()
 
-        wandb.log({
-            "val_loss": val_loss / len(val_loader),
-            **{f"val_dice_class_{i}": score for i, score in enumerate(dice_scores)},
-            "mean_dice": mean_dice
-        })
+        wandb.log(
+            {
+                "val_loss": val_loss / len(val_loader),
+                **{f"val_dice_class_{i}": score for i, score in enumerate(dice_scores)},
+                "mean_dice": mean_dice,
+            }
+        )
 
         print(f"Mean Validation Dice: {mean_dice:.4f}")
-
 
         # Save best model
         if mean_dice > best_dice:
             best_dice = mean_dice
             early_stop_counter = 0
-            torch.save(model.state_dict(), os.path.join(config.save_path, "best_model.pth"))
+            torch.save(
+                model.state_dict(), os.path.join(config.save_path, "best_model.pth")
+            )
             print(f"Saved Best Model at Epoch {epoch + 1}: Mean Dice: {mean_dice:.4f}")
         else:
             early_stop_counter += 1
@@ -154,6 +173,7 @@ def train():
                 break
 
         wandb.log({"epoch_time": time.time() - start_time})
+
 
 if __name__ == "__main__":
     train()

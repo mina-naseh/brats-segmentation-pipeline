@@ -2,8 +2,18 @@ import os
 import json
 import torch
 from monai.transforms import (
-    LoadImaged, EnsureChannelFirstd, ConcatItemsd, Orientationd, Spacingd,
-    NormalizeIntensityd, RandSpatialCropd, RandFlipd, EnsureTyped, ToTensord, Compose, MapTransform
+    LoadImaged,
+    EnsureChannelFirstd,
+    ConcatItemsd,
+    Orientationd,
+    Spacingd,
+    NormalizeIntensityd,
+    RandSpatialCropd,
+    RandFlipd,
+    EnsureTyped,
+    ToTensord,
+    Compose,
+    MapTransform,
 )
 from monai.data import CacheDataset, DataLoader
 from monai.utils import set_determinism
@@ -21,30 +31,37 @@ class ConvertToMultiChannelBasedOnBratsClassesd(MapTransform):
     def __call__(self, data):
         d = dict(data)
         for key in self.keys:
-            print(f"Original label shape: {d[key].shape}, unique values: {torch.unique(d[key])}")
+            print(
+                f"Original label shape: {d[key].shape}, unique values: {torch.unique(d[key])}"
+            )
             result = []
 
             # Tumor Core (TC): Combine label 1 and label 4
             tc = torch.logical_or(d[key] == 1, d[key] == 4)
             result.append(tc)
-            print(f"Tumor Core (TC) unique values: {torch.unique(tc)}")
+
+            # print(f"Tumor Core (TC) unique values: {torch.unique(tc)}")
+            # print(1 / 0)
+            # exit()
 
             # Whole Tumor (WT): Combine label 1, label 2, and label 4
-            wt = torch.logical_or(torch.logical_or(d[key] == 2, d[key] == 4), d[key] == 1)
+            wt = torch.logical_or(
+                torch.logical_or(d[key] == 2, d[key] == 4), d[key] == 1
+            )
             result.append(wt)
-            print(f"Whole Tumor (WT) unique values: {torch.unique(wt)}")
+            # print(f"Whole Tumor (WT) unique values: {torch.unique(wt)}")
 
             # Enhancing Tumor (ET): Only label 4
             et = d[key] == 4
             result.append(et)
-            print(f"Enhancing Tumor (ET) unique values: {torch.unique(et)}")
+            # print(f"Enhancing Tumor (ET) unique values: {torch.unique(et)}")
 
             # Stack binary masks into multi-channel format
             d[key] = torch.stack(result, dim=0).float()
-            print(f"Transformed label shape: {d[key].shape}, unique values: {torch.unique(d[key])}")
+            # print(
+            #     f"Transformed label shape: {d[key].shape}, unique values: {torch.unique(d[key])}"
+            # )
         return d
-
-
 
 
 # Preprocessing and augmentation pipeline
@@ -64,18 +81,28 @@ def get_transforms(roi_size, augment=True):
         EnsureChannelFirstd(keys=["t1", "t1ce", "t2", "flair", "label"]),
         ConcatItemsd(keys=["t1", "t1ce", "t2", "flair"], name="image"),
         Orientationd(keys=["image", "label"], axcodes="RAS"),
-        Spacingd(keys=["image", "label"], pixdim=(1.0, 1.0, 1.0), mode=("bilinear", "nearest")),
+        Spacingd(
+            keys=["image", "label"],
+            pixdim=(1.0, 1.0, 1.0),
+            mode=("bilinear", "nearest"),
+        ),
         NormalizeIntensityd(keys="image", nonzero=True, channel_wise=True),
-        ConvertToMultiChannelBasedOnBratsClassesd(keys=["label"]),  # One-hot encode labels
+        ConvertToMultiChannelBasedOnBratsClassesd(
+            keys=["label"]
+        ),  # One-hot encode labels
     ]
 
     if augment:
-        transforms.extend([
-            RandSpatialCropd(keys=["image", "label"], roi_size=roi_size, random_size=False),
-            RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=0),
-            RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=1),
-            RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=2),
-        ])
+        transforms.extend(
+            [
+                RandSpatialCropd(
+                    keys=["image", "label"], roi_size=roi_size, random_size=False
+                ),
+                RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=0),
+                RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=1),
+                RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=2),
+            ]
+        )
 
     transforms.append(ToTensord(keys=["image", "label"]))
     return Compose(transforms)
@@ -108,20 +135,40 @@ def get_dataloaders(split_dir, roi_size, batch_size, num_workers=4):
         test_files = json.load(f)
 
     # Use CacheDataset for faster loading
-    train_ds = CacheDataset(data=train_files, transform=train_transform, cache_rate=0.8, num_workers=num_workers)
-    val_ds = CacheDataset(data=val_files, transform=val_transform, cache_rate=1.0, num_workers=num_workers)
-    test_ds = CacheDataset(data=test_files, transform=val_transform, cache_rate=1.0, num_workers=num_workers)
+    train_ds = CacheDataset(
+        data=train_files,
+        transform=train_transform,
+        cache_rate=0.8,
+        num_workers=num_workers,
+    )
+    val_ds = CacheDataset(
+        data=val_files, transform=val_transform, cache_rate=1.0, num_workers=num_workers
+    )
+    test_ds = CacheDataset(
+        data=test_files,
+        transform=val_transform,
+        cache_rate=1.0,
+        num_workers=num_workers,
+    )
 
     # Create data loaders
-    train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-    val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers)
+    train_loader = DataLoader(
+        train_ds, batch_size=batch_size, shuffle=True, num_workers=num_workers
+    )
+    val_loader = DataLoader(
+        val_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
+    )
+    test_loader = DataLoader(
+        test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
+    )
 
     return train_loader, val_loader, test_loader
 
 
 # Visualization utility using Weights & Biases
-def visualize_samples(loader, num_samples=3, project_name="brats_segmentation", slice_axis=2):
+def visualize_samples(
+    loader, num_samples=3, project_name="brats_segmentation", slice_axis=2
+):
     """
     Visualize 2D slices of images and labels using Weights & Biases.
     Logs a table of images with segmentation masks overlaid.
@@ -151,9 +198,14 @@ def visualize_samples(loader, num_samples=3, project_name="brats_segmentation", 
         label = batch["label"][0].cpu().numpy()  # Shape: [C, H, W, D]
 
         # Choose slices along the given axis
-        slice_index = image.shape[slice_axis + 1] // 2  # Middle slice along the given axis
+        slice_index = (
+            image.shape[slice_axis + 1] // 2
+        )  # Middle slice along the given axis
         image_slice = np.take(image[0], slice_index, axis=slice_axis)
-        label_slices = [np.take(label[c], slice_index, axis=slice_axis) for c in range(label.shape[0])]
+        label_slices = [
+            np.take(label[c], slice_index, axis=slice_axis)
+            for c in range(label.shape[0])
+        ]
 
         # Combine labels into a single mask for visualization
         combined_label = np.zeros_like(label_slices[0])
@@ -180,7 +232,6 @@ def visualize_samples(loader, num_samples=3, project_name="brats_segmentation", 
     wandb.finish()
 
 
-
 if __name__ == "__main__":
     # Example usage
     split_dir = "./splits/split3"
@@ -188,7 +239,9 @@ if __name__ == "__main__":
     batch_size = 1
     num_workers = 4
 
-    train_loader, val_loader, test_loader = get_dataloaders(split_dir, roi_size, batch_size, num_workers)
+    train_loader, val_loader, test_loader = get_dataloaders(
+        split_dir, roi_size, batch_size, num_workers
+    )
 
     # Inspect one batch from the training DataLoader
     print("Testing the training DataLoader...")

@@ -9,12 +9,13 @@
 #SBATCH --time=00:30:00             
 
 
-module load lang/Python
+# module load lang/Python
 
 # Activate the virtual environment
-source /home/users/mnaseh/brats-segmentation-pipeline/.venv/bin/activate
+# source /home/users/$USER/brats-segmentation-pipeline/.venv/bin/activate
+conda activate imaging
+python -c "import sys; print(sys.executable)"
 
 # Change to the directory where the code is located
-cd /home/users/mnaseh/brats-segmentation-pipeline/task4/brats_segmentation
-
+# cd /home/users/(mnaseh)/brats-segmentation-pipeline/task4/brats_segmentation
 python3 train.py

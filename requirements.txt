@@ -6,3 +6,5 @@ scikit-image==0.25.0
 nibabel
 monai==1.4.0
 pytest
+wandb
+tqdm

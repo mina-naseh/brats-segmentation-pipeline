@@ -24,3 +24,7 @@ dataset_sample.tar.gz
 
 /task4/brats_segmentation/wandb/
 wandb/
+
+
+*.out
+*.err
