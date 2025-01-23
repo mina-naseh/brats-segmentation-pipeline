@@ -107,7 +107,9 @@ def get_transforms(roi_size, augment=True):
         #     keys=["label"]
         # ),  # One-hot encode labels
         RemapLabels(keys=["label"], mapping={4: 1, 2: 1}),
-        # AsDiscreted(keys="label", to_onehot=4),
+        AsDiscreted(keys="label", to_onehot=2),  # If using 2 classes
+        # RemapLabels(keys=["label"], mapping={4:3}),
+        # AsDiscreted(keys="label", to_onehot=4), # If using 4 classes
         RandSpatialCropd(keys=["image", "label"], roi_size=roi_size, random_size=False),
     ]
 
