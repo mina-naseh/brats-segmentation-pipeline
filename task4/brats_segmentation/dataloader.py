@@ -83,7 +83,8 @@ def get_transforms(roi_size, augment=True):
         Compose: Transformation pipeline.
     """
     print("Using roi_size", roi_size)
-    images_types = ["t1", "t1ce", "t2", "flair"]
+    # images_types = ["t1", "t1ce", "t2", "flair"]
+    images_types = ["t1ce", "flair"]
     transforms = [
         LoadImaged(keys=images_types + ["label"]),
         EnsureChannelFirstd(keys=images_types + ["label"]),
@@ -105,8 +106,8 @@ def get_transforms(roi_size, augment=True):
         # ConvertToMultiChannelBasedOnBratsClassesd(
         #     keys=["label"]
         # ),  # One-hot encode labels
-        RemapLabels(keys=["label"], mapping={4: 3}),
-        AsDiscreted(keys="label", to_onehot=4),
+        RemapLabels(keys=["label"], mapping={4: 1, 2: 1}),
+        # AsDiscreted(keys="label", to_onehot=4),
         RandSpatialCropd(keys=["image", "label"], roi_size=roi_size, random_size=False),
     ]
 

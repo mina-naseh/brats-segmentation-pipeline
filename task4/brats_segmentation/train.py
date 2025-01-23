@@ -7,9 +7,28 @@ from monai.losses import DiceLoss
 from monai.metrics import DiceMetric
 from monai.inferers import sliding_window_inference
 from monai.data import decollate_batch
+from torch.nn import functional as F
 from tqdm import tqdm
 from dataloader import get_dataloaders
 import wandb
+
+
+def create_model(dataloader):
+    sample = next(iter(dataloader))
+    sample_image = sample["image"]
+    sample_label = sample["label"]
+    assert sample_image.shape[2:] == sample_label.shape[2:], "Shape mismatch"
+    assert sample_label.shape[0] == sample_image.shape[0], "Batch size mismatch"
+
+    model = UNet(
+        spatial_dims=3,
+        in_channels=sample_image.shape[1],
+        out_channels=sample_label.shape[1],
+        channels=(16, 32, 64, 128, 256),
+        strides=(2, 2, 2, 2),
+    )
+    print(model)
+    return model
 
 
 def train():
@@ -18,9 +37,9 @@ def train():
         project="brats_segmentation",
         config={
             "roi_size": [128, 128, 128],
-            "batch_size": 4,
+            "batch_size": 16,
             "epochs": 50,
-            "learning_rate": 0.05,
+            "learning_rate": 0.01,
             "num_workers": 1,
             "split_dir": "./splits/split2",
             "data_dir": "/work/projects/ai_imaging_class/dataset",
@@ -40,23 +59,14 @@ def train():
 
     # Initialize model, loss, optimizer
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    sample = next(iter(train_loader))
-    sample_image = sample["image"]
-    sample_label = sample["label"]
-    assert sample_image.shape[2:] == sample_label.shape[2:], "Shape mismatch"
-    assert sample_label.shape[0] == sample_image.shape[0], "Batch size mismatch"
+    model = create_model(train_loader).to(device)
 
-    model = UNet(
-        spatial_dims=3,
-        in_channels=sample_image.shape[1],
-        out_channels=sample_label.shape[1],
-        channels=(16, 32, 64, 128, 256),
-        strides=(2, 2, 2, 2),
-    ).to(device)
-
-    loss_function = DiceLoss(to_onehot_y=False, softmax=True, include_background=False)
+    loss_function = DiceLoss(to_onehot_y=False, softmax=False, include_background=False)
     # loss_function = BCEWithLogitsLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
+    # optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
+    optimizer = torch.optim.AdamW(
+        model.parameters(), lr=config.learning_rate, weight_decay=1e-5
+    )
 
     # Initialize metrics
     dice_metric = DiceMetric(
@@ -89,13 +99,17 @@ def train():
 
             optimizer.zero_grad()
             outputs = model(inputs)
+            softmax_outputs = F.softmax(outputs, dim=1)
+            # print(softmax_outputs[0, :, 0, 0, 0], labels[0, :, 0, 0, 0])
             # print(outputs.shape, labels.shape)
-            loss = loss_function(outputs, labels)
+            # exit()
+            # loss = loss_function(outputs, labels)
+            loss = loss_function(softmax_outputs, labels)
             loss.backward()
             optimizer.step()
 
             epoch_loss += loss.item()
-            dice_metric(y_pred=outputs, y=labels)
+            dice_metric(y_pred=softmax_outputs, y=labels)
             wandb.log({"train_loss_step": loss.item()})
 
         # Aggregate and log training Dice scores
@@ -128,13 +142,15 @@ def train():
                 ].to(device)
 
                 # Perform sliding window inference
-                val_outputs = sliding_window_inference(
-                    inputs=val_inputs,
-                    roi_size=config.roi_size,
-                    sw_batch_size=1,
-                    predictor=model,
-                    overlap=0.5,
-                )
+                # val_outputs = sliding_window_inference(
+                #     inputs=val_inputs,
+                #     roi_size=config.roi_size,
+                #     sw_batch_size=1,
+                #     predictor=model,
+                #     overlap=0.5,
+                # )
+                val_outputs = model(val_inputs)
+                val_outputs = F.softmax(val_outputs, dim=1)
 
                 # Post-process predictions
                 # val_outputs = post_transform(val_outputs)
@@ -145,18 +161,19 @@ def train():
                 ), f"Shape mismatch: {val_outputs.shape} vs {val_labels.shape}"
 
                 # Update Dice metric
-                val_outputs_decoupled = decollate_batch(val_outputs)
-                val_labels_decoupled = decollate_batch(val_labels)
+                # val_outputs_decoupled = decollate_batch(val_outputs)
+                # val_labels_decoupled = decollate_batch(val_labels)
 
                 try:
-                    dice_metric(y_pred=val_outputs_decoupled, y=val_labels_decoupled)
+                    # dice_metric(y_pred=val_outputs_decoupled, y=val_labels_decoupled)
+                    dice_metric(y_pred=val_outputs, y=val_labels)
                 except Exception as e:
                     print(f"[ERROR] Dice metric computation failed: {e}")
                     continue
 
                 # Compute validation loss
-                loss = loss_function(val_outputs, val_labels)
-                val_loss += loss.item()
+                # loss = loss_function(val_outputs, val_labels)
+                # val_loss += loss.item()
 
         # Aggregate and log validation metrics
         dice_scores, _ = dice_metric.aggregate()
