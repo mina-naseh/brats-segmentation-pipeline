@@ -46,7 +46,7 @@ def train():
 
     model = UNet(
         spatial_dims=3,
-        in_channels=sample.shape[1],
+        in_channels=sample_image.shape[1],
         out_channels=sample_label.shape[1],
         channels=(16, 32, 64, 128, 256),
         strides=(2, 2, 2, 2),
