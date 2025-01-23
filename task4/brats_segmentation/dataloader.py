@@ -1,5 +1,10 @@
-import os
 import json
+import os
+from pathlib import Path
+from typing import Literal
+from matplotlib.colors import ListedColormap
+from matplotlib.patches import Patch
+from matplotlib.widgets import Slider
 import torch
 from monai.transforms import (
     LoadImaged,
@@ -10,16 +15,16 @@ from monai.transforms import (
     NormalizeIntensityd,
     RandSpatialCropd,
     RandFlipd,
-    EnsureTyped,
     ToTensord,
     Compose,
     MapTransform,
+    DeleteItemsd,
+    AsDiscreted,
 )
 from monai.data import CacheDataset, DataLoader
 from monai.utils import set_determinism
 import numpy as np
 import matplotlib.pyplot as plt
-import wandb
 
 
 # Set deterministic behavior for reproducibility
@@ -31,43 +36,28 @@ class ConvertToMultiChannelBasedOnBratsClassesd(MapTransform):
     def __call__(self, data):
         d = dict(data)
         for key in self.keys:
-            # This is for optimization
             if key != "label":
                 continue
-            print(
-                f"Original label shape: {d[key].shape}, unique values: {torch.unique(d[key])}"
-            )
             result = []
-
-            # Tumor Core (TC): Combine label 1 and label 4
+            # Tumor Core (TC): Combine label 1 and
             tc = torch.logical_or(d[key] == 1, d[key] == 4)
             result.append(tc)
-
-            # print(f"Tumor Core (TC) unique values: {torch.unique(tc)}")
-            # print(1 / 0)
-            # exit()
 
             # Whole Tumor (WT): Combine label 1, label 2, and label 4
             wt = torch.logical_or(
                 torch.logical_or(d[key] == 2, d[key] == 4), d[key] == 1
             )
             result.append(wt)
-            # print(f"Whole Tumor (WT) unique values: {torch.unique(wt)}")
 
             # Enhancing Tumor (ET): Only label 4
             et = d[key] == 4
             result.append(et)
-            # print(f"Enhancing Tumor (ET) unique values: {torch.unique(et)}")
 
             # Stack binary masks into multi-channel format
             d[key] = torch.stack(result, dim=0).float().squeeze(1)
-            # print(
-            #     f"Transformed label shape: {d[key].shape}, unique values: {torch.unique(d[key])}"
-            # )
         return d
 
 
-# Preprocessing and augmentation pipeline
 def get_transforms(roi_size, augment=True):
     """
     Generate transforms for data preprocessing and augmentation.
@@ -79,10 +69,12 @@ def get_transforms(roi_size, augment=True):
     Returns:
         Compose: Transformation pipeline.
     """
+    images_types = ["t1", "t1ce", "t2", "flair"]
     transforms = [
-        LoadImaged(keys=["t1", "t1ce", "t2", "flair", "label"]),
-        EnsureChannelFirstd(keys=["t1", "t1ce", "t2", "flair", "label"]),
-        ConcatItemsd(keys=["t1", "t1ce", "t2", "flair"], name="image"),
+        LoadImaged(keys=images_types + ["label"]),
+        EnsureChannelFirstd(keys=images_types + ["label"]),
+        ConcatItemsd(keys=images_types, name="image"),
+        DeleteItemsd(keys=images_types),
         Orientationd(keys=["image", "label"], axcodes="RAS"),
         Spacingd(
             keys=["image", "label"],
@@ -90,17 +82,16 @@ def get_transforms(roi_size, augment=True):
             mode=("bilinear", "nearest"),
         ),
         NormalizeIntensityd(keys="image", nonzero=True, channel_wise=True),
-        ConvertToMultiChannelBasedOnBratsClassesd(
-            keys=["label"]
-        ),  # One-hot encode labels
+        # ConvertToMultiChannelBasedOnBratsClassesd(
+        #     keys=["label"]
+        # ),  # One-hot encode labels
+        AsDiscreted(keys="label", to_onehot=5),
+        RandSpatialCropd(keys=["image", "label"], roi_size=roi_size, random_size=False),
     ]
 
     if augment:
         transforms.extend(
             [
-                RandSpatialCropd(
-                    keys=["image", "label"], roi_size=roi_size, random_size=False
-                ),
                 RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=0),
                 RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=1),
                 RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=2),
@@ -109,6 +100,43 @@ def get_transforms(roi_size, augment=True):
 
     transforms.append(ToTensord(keys=["image", "label"]))
     return Compose(transforms)
+
+
+def get_dataloader(
+    split_dir: str | os.PathLike,
+    name: Literal["train", "test", "validation"],
+    roi_size: tuple,
+    batch_size: int = 2,
+    num_workers: int = 0,
+    cache_rate: float = 0.5,
+):
+    """
+    Create a PyTorch DataLoader for the BraTS dataset.
+
+    Args:
+        split_dir (str): Path to the directory containing split JSON files.
+        roi_size (tuple): Size of the region of interest for cropping.
+        batch_size (int): Number of samples per batch.
+        num_workers (int): Number of workers to use for
+
+    Returns:
+        DataLoader: PyTorch DataLoader.
+    """
+    if name not in ["train", "test", "validation"]:
+        raise ValueError("name must be one of 'train', 'test', or 'validation'")
+    split_dir = Path(split_dir)
+    with open(split_dir / f"{name}.txt", "r") as f:
+        files = json.load(f)
+    transform = get_transforms(roi_size, augment=True if name == "train" else False)
+    dataset = CacheDataset(
+        data=files,
+        transform=transform,
+        cache_rate=0.1,
+        num_workers=num_workers,
+    )
+    return DataLoader(
+        dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers
+    )
 
 
 # DataLoader setup with CacheDataset
@@ -125,130 +153,117 @@ def get_dataloaders(split_dir, roi_size, batch_size, num_workers=4):
     Returns:
         tuple: Training, validation, and test DataLoaders.
     """
-    # Generate transforms for train and validation/test
-    train_transform = get_transforms(roi_size, augment=True)
-    val_transform = get_transforms(roi_size, augment=False)
+    return [
+        get_dataloader(split_dir, name, roi_size, batch_size, num_workers)
+        for name in ["train", "validation", "test"]
+    ]
 
-    # Load dataset splits
-    with open(f"{split_dir}/train.txt", "r") as f:
-        train_files = json.load(f)
-    with open(f"{split_dir}/validation.txt", "r") as f:
-        val_files = json.load(f)
-    with open(f"{split_dir}/test.txt", "r") as f:
-        test_files = json.load(f)
 
-    # Use CacheDataset for faster loading
-    train_ds = CacheDataset(
-        data=train_files,
-        transform=train_transform,
-        cache_rate=0.8,
-        num_workers=num_workers,
-    )
-    val_ds = CacheDataset(
-        data=val_files, transform=val_transform, cache_rate=1.0, num_workers=num_workers
-    )
-    test_ds = CacheDataset(
-        data=test_files,
-        transform=val_transform,
-        cache_rate=1.0,
-        num_workers=num_workers,
-    )
+def make_images(images, segmentation, slice_index, label_color):
+    imgs = images[..., slice_index]
+    imgs = (imgs - imgs.min(axis=0)) / (imgs.max(axis=0) - imgs.min(axis=0) + 1e-5)
+    seg = segmentation[..., slice_index]
+    for img in imgs:
 
-    # Create data loaders
-    train_loader = DataLoader(
-        train_ds, batch_size=batch_size, shuffle=True, num_workers=num_workers
-    )
-    val_loader = DataLoader(
-        val_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
-    )
-    test_loader = DataLoader(
-        test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
-    )
+        img = np.stack([img, img, img], axis=-1)
+        for index, color in enumerate(label_color, start=1):
+            img[seg == index] = color
 
-    return train_loader, val_loader, test_loader
+        yield img
 
 
 # Visualization utility using Weights & Biases
-def visualize_samples(
-    loader, num_samples=3, project_name="brats_segmentation", slice_axis=2
-):
+def visualize_samples(loader: DataLoader):
     """
     Visualize 2D slices of images and labels using Weights & Biases.
-    Logs a table of images with segmentation masks overlaid.
 
     Args:
         loader: DataLoader to fetch samples from.
-        num_samples: Number of samples to visualize.
-        project_name: W&B project name.
-        slice_axis: Axis along which to slice (0=coronal, 1=sagittal, 2=axial).
     """
-    wandb.init(project=project_name)
-    class_labels = {
-        0: "Background",
-        1: "Tumor Core",
-        2: "Whole Tumor",
-        3: "Enhancing Tumor",
-    }
+    print("------------")
+    # label_color = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]
+    # label_text = ["Tumor Core", "Whole Tumor", "Enhancing"]
+    label_color = [[0, 0, 1], [0, 1, 0], [1, 1, 0], [1, 0, 0]]
+    label_text = [
+        "Necrotic and Non-Enhancing Tumor",
+        "Edema",
+        "IMPOSSIBLE",
+        "Enhancing Tumor",
+    ]
 
-    table = wandb.Table(columns=["Slice Index", "Image", "Ground Truth"])
+    sample = next(iter(loader))
 
-    for i, batch in enumerate(loader):
-        if i >= num_samples:
-            break
+    # sample[imgage].shape = (batch_size, num_channels, H, W, D)
+    images = sample["image"][0].numpy()  # First item in the batch
 
-        # Extract image and label
-        image = batch["image"][0].cpu().numpy()  # Shape: [C, H, W, D]
-        label = batch["label"][0].cpu().numpy()  # Shape: [C, H, W, D]
+    segmentation = sample["label"]
+    print(segmentation.shape)
+    segmentation = torch.argmax(segmentation[0], dim=0).numpy()
+    assert (
+        images.shape[1:] == segmentation.shape
+    ), f"Shape mismatch {images.shape=} {segmentation.shape=}"
 
-        # Choose slices along the given axis
-        slice_index = (
-            image.shape[slice_axis + 1] // 2
-        )  # Middle slice along the given axis
-        image_slice = np.take(image[0], slice_index, axis=slice_axis)
-        label_slices = [
-            np.take(label[c], slice_index, axis=slice_axis)
-            for c in range(label.shape[0])
-        ]
+    initial_slice = images.shape[-1] // 2
 
-        # Combine labels into a single mask for visualization
-        combined_label = np.zeros_like(label_slices[0])
-        for c, mask in enumerate(label_slices, 1):  # Start class IDs from 1
-            combined_label[mask > 0] = c
+    # 3D visualization :')
+    if images.shape[0] == 4:
+        fig, axes = plt.subplots(2, 2, figsize=(10, 10))
+        plt.subplots_adjust(bottom=0.2)
+        axes = axes.flatten()
+    else:
+        fig, axes = plt.subplots(1, images.shape[0], figsize=(10, 10))
+    plt.subplots_adjust(bottom=0.2)
 
-        # Log the image and labels
-        table.add_data(
-            slice_index,
-            wandb.Image(image_slice, caption=f"Slice {slice_index}"),
-            wandb.Image(
-                image_slice,
-                masks={
-                    "ground_truth": {
-                        "mask_data": combined_label,
-                        "class_labels": class_labels,
-                    }
-                },
-                caption=f"Slice {slice_index}",
-            ),
-        )
+    img_displays = []
+    for ax, image, title in zip(
+        axes,
+        make_images(images, segmentation, initial_slice, label_color),
+        ["T1", "T1CE", "T2", "FLAIR"],
+    ):
+        ax.set_title(title)
+        ax.axis("off")
+        img_displays.append(ax.imshow(image))
 
-    wandb.log({"Visualization Samples": table})
-    wandb.finish()
+    ax_slider = plt.axes([0.2, 0.05, 0.65, 0.03])  # [left, bottom, width, height]
+    slider = Slider(
+        ax_slider, "Slice", 0, images.shape[-1] - 1, valinit=initial_slice, valstep=1
+    )
+
+    def update(_):
+        slice_index = int(slider.val)
+        for img_display, img in zip(
+            img_displays, make_images(images, segmentation, slice_index, label_color)
+        ):
+            img_display.set_data(img)
+            fig.suptitle(f"Slice {slice_index}")
+        fig.canvas.draw_idle()
+
+    cmap = ListedColormap(list(label_color))
+
+    axes[-1].legend(
+        handles=[Patch(color=cmap(i), label=text) for i, text in enumerate(label_text)],
+        bbox_to_anchor=(1.05, 1),
+        loc="upper left",
+    )
+    slider.on_changed(update)
+    plt.show()
 
 
 if __name__ == "__main__":
     # Example usage
     split_dir = "./splits/split3"
-    roi_size = (128, 128, 128)
-    batch_size = 1
+    # roi_size = (128, 128, 128)
+    roi_size = (240, 240, 160)
+    batch_size = 8
     num_workers = 1
 
-    train_loader, val_loader, test_loader = get_dataloaders(
-        split_dir, roi_size, batch_size, num_workers
+    val_dataloader = get_dataloader(
+        split_dir, "validation", roi_size, batch_size, num_workers
     )
 
     # Inspect one batch from the training DataLoader
     print("Testing the training DataLoader...")
-    for batch in train_loader:
+    for batch in val_dataloader:
         print(f"Image shape: {batch['image'].shape}")
         print(f"Label shape: {batch['label'].shape}")
         print(f"Label unique values: {torch.unique(batch['label'])}")
@@ -256,4 +271,4 @@ if __name__ == "__main__":
 
     # # Visualize samples using Weights & Biases
     # print("Visualizing samples with W&B...")
-    # visualize_samples(train_loader)
+    visualize_samples(val_dataloader)
