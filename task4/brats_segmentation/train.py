@@ -5,7 +5,6 @@ from monai.networks.nets import UNet
 from monai.losses import DiceLoss
 from monai.metrics import DiceMetric
 from monai.inferers import sliding_window_inference
-from monai.transforms import Compose, Activations, AsDiscrete
 from monai.data import decollate_batch
 from dataloader import get_dataloaders
 import wandb
@@ -21,7 +20,7 @@ def train():
             "epochs": 50,
             "learning_rate": 1e-3,
             "num_workers": 1,
-            "split_dir": "./splits/split3",
+            "split_dir": "./splits/split1",
             "data_dir": "/work/projects/ai_imaging_class/dataset",
             "early_stop_limit": 10,
             "save_path": "models",
@@ -39,10 +38,16 @@ def train():
 
     # Initialize model, loss, optimizer
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    sample = next(iter(train_loader))
+    sample_image = sample["image"]
+    sample_label = sample["label"]
+    assert sample_image.shape[2:] == sample_label.shape[2:], "Shape mismatch"
+    assert sample_label.shape[0] == sample_image.shape[0], "Batch size mismatch"
+
     model = UNet(
         spatial_dims=3,
-        in_channels=4,
-        out_channels=3,  # 3 channels: TC, WT, ET
+        in_channels=sample.shape[1],
+        out_channels=sample_label.shape[1],
         channels=(16, 32, 64, 128, 256),
         strides=(2, 2, 2, 2),
     ).to(device)
@@ -65,11 +70,11 @@ def train():
     os.makedirs(config.save_path, exist_ok=True)
 
     wandb.watch(model, log="all", log_freq=100)
-
+    epoch_loss = []
     for epoch in range(config.epochs):
         start_time = time.time()
         model.train()
-        epoch_loss = 0.0
+        epoch_loss.append([])
         dice_metric.reset()
 
         for batch_idx, batch in enumerate(train_loader):
@@ -82,7 +87,7 @@ def train():
             loss.backward()
             optimizer.step()
 
-            epoch_loss += loss.item()
+            epoch_loss[-1].append(loss.item())
             dice_metric(y_pred=outputs, y=labels)
             wandb.log({"train_loss_step": loss.item()})
 
@@ -91,13 +96,16 @@ def train():
         dice_scores = dice_scores.cpu().numpy()
         dice_metric.reset()
 
+        dice_scores_dict = {
+            f"train_dice_class_{i}": score for i, score in enumerate(dice_scores)
+        }
+        print(
+            f"Epoch {epoch + 1}: Train Loss: {epoch_loss[-1]}, Dice: {dice_scores_dict}"
+        )
         wandb.log(
             {
                 "train_loss": epoch_loss / len(train_loader),
-                **{
-                    f"train_dice_class_{i}": score
-                    for i, score in enumerate(dice_scores)
-                },
+                **dice_scores_dict,
             }
         )
 
