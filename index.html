@@ -171,6 +171,10 @@ window.Quarto = {
   <li><a href="#task-4" id="toc-task-4" class="nav-link" data-scroll-target="#task-4">Task 4</a>
   <ul class="collapse">
   <li><a href="#data-handling-and-preprocessing-10-points" id="toc-data-handling-and-preprocessing-10-points" class="nav-link" data-scroll-target="#data-handling-and-preprocessing-10-points">Data Handling and Preprocessing (10 Points)</a></li>
+  <li><a href="#data-splitting-5-points" id="toc-data-splitting-5-points" class="nav-link" data-scroll-target="#data-splitting-5-points">2. Data Splitting (5 Points)</a></li>
+  <li><a href="#model-selection-and-training-20-points" id="toc-model-selection-and-training-20-points" class="nav-link" data-scroll-target="#model-selection-and-training-20-points">3. Model Selection and Training (20 Points)</a></li>
+  <li><a href="#testing-and-performance-evaluation-15-points" id="toc-testing-and-performance-evaluation-15-points" class="nav-link" data-scroll-target="#testing-and-performance-evaluation-15-points">4. Testing and Performance Evaluation (15 Points)</a></li>
+  <li><a href="#extension-to-new-modalities-5-bonus-points" id="toc-extension-to-new-modalities-5-bonus-points" class="nav-link" data-scroll-target="#extension-to-new-modalities-5-bonus-points">5. Extension to New Modalities (5 Bonus Points)</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -226,7 +230,7 @@ window.Quarto = {
 </header>
 
 
-<div id="54522e69" class="cell" data-execution_count="1">
+<div id="fbd8953e" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
@@ -296,7 +300,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 <div class="answer">
 <p>The first step is to find the values of <span class="math inline">\(c\)</span> for both cases. Since <span class="math inline">\(\max(f) = \max(g) = 255\)</span>, we have <span class="math inline">\(c = 255 / 255^\gamma\)</span>.</p>
-<div id="db10df82" class="cell" data-execution_count="3">
+<div id="90644c83" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
@@ -364,7 +368,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <li>For a grey value spread, the minimum slope of the transform function should be 1.</li>
 <li>For a grey value compression, the minimum slope of the transform function should be 0 (and smaller than 1). For instance, in this function:</li>
 </ol>
-<div id="e29d32aa" class="cell" data-execution_count="4">
+<div id="bf488364" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -386,7 +390,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Read the greyscale image brain.png, which is provided on the lecture homepage. Reduce the salt and pepper noise in the image using a median filter. (3pts)</p>
 </div>
 <div class="answer">
-<div id="858a39db" class="cell" data-execution_count="5">
+<div id="a3149810" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
@@ -432,7 +436,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p><strong>Otsu</strong> thresholding is a histogram-based method for image segmentation. Use it to find an intensity threshold to segment brain pixels from background. Use Otsu thresholding again to find the threshold only over the brain pixels to segment brain’s grey matter from the white matter. Using the two thresholds create three binary masks brain-bg.png, brain-gm.png, brain-wm.png, which should be white in regions of background, grey matter, and white matter, respectively, and black elsewhere. (4pts)</p>
 </div>
 <div class="answer">
-<div id="568ad33f" class="cell" data-execution_count="6">
+<div id="eeffaaf1" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>values, bin_edge <span class="op">=</span> np.histogram(img, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="dv">0</span>, <span class="dv">256</span>))</span>
@@ -455,7 +459,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 </div>
 <p>The correct way to use Otsu thresholding with several values is to use <span class="citation" data-cites="arora2008multilevel">(<a href="#ref-arora2008multilevel" role="doc-biblioref">Arora et al. 2008</a>)</span>, which is not implemented in OpenCV. However, we can use the implementation in the <code>skimage</code> library (which implemented based on <span class="citation" data-cites="liao2001fast">(<a href="#ref-liao2001fast" role="doc-biblioref">Liao et al. 2001</a>)</span>)</p>
-<div id="12cd66cf" class="cell" data-execution_count="7">
+<div id="e60025e8" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimage.filters <span class="im">import</span> threshold_multiotsu</span>
@@ -481,7 +485,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>(brain_bg, brain_gm, brain_wm), threshold <span class="op">=</span> otsu_threshold(img, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="5eb07e90" class="cell" data-execution_count="8">
+<div id="84818c42" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"r"</span>, <span class="st">"g"</span>, <span class="st">"y"</span>]</span>
@@ -512,7 +516,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 </div>
 </div>
-<div id="e2cd378c" class="cell" data-execution_count="9">
+<div id="74376ead" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
@@ -547,7 +551,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Plot a log-scaled histogram of the image, which should show how frequently different intensity values occur in the image. How could you roughly estimate the two thresholds you found in the previous task just by looking at the histogram? (3pts)</p>
 </div>
 <div class="answer">
-<div id="ba00b39f" class="cell" data-execution_count="10">
+<div id="41f1d577" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>values, bin_edge <span class="op">=</span> np.histogram(img, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="dv">0</span>, <span class="dv">256</span>))</span>
@@ -576,7 +580,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Combine the three masks into a single colour image so that background, grey matter, and white matter are mapped to red, green and blue, respectively. (3pts)</p>
 </div>
 <div class="answer">
-<div id="4bef665f" class="cell" data-execution_count="11">
+<div id="c25c3307" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>combined_brain <span class="op">=</span> np.stack([brain_bg, brain_gm, brain_wm], axis<span class="op">=-</span><span class="dv">1</span>).astype(np.uint8) <span class="op">*</span> <span class="dv">255</span></span>
@@ -598,7 +602,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Use erosion (or any other morphological) filter to produce a border between the grey and white matter. Overlay that border on the denoised input image. (3pts)</p>
 </div>
 <div class="answer">
-<div id="ed5ed937" class="cell" data-execution_count="12">
+<div id="1055df22" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>kernel <span class="op">=</span> np.ones((<span class="dv">3</span>, <span class="dv">3</span>), np.uint8)</span>
@@ -628,7 +632,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <p>Use bilinear interpolation to up-sample the image by a factor of four along each axis. Apply the same thresholds as in 2) to obtain a segmentation into background, grey matter, and white matter. Up-sample the masks from 2) in the same way and compare the up-sampled masks to the masks from the up-sampled image. Can you see a diference? Why? Repeat the same procedure using nearest neighbour interpolation. Can you see a diference now? (4pts)</p>
 </div>
 <div class="answer">
-<div id="33eac749" class="cell" data-execution_count="13">
+<div id="ad7aebb3" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upsample(img: np.ndarray, factor: <span class="bu">int</span>, interpolation: <span class="bu">int</span>) <span class="op">-&gt;</span> np.ndarray:</span>
@@ -674,7 +678,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 <p>Clearly, we can see much smoother edges in the upsampled masks compared to the upsampled image. This is because the interpolation method used in the up-sampling process is linear, which smooths the edges.</p>
 <p>Now, let’s repeat the same procedure using the nearest neighbour interpolation method.</p>
-<div id="866c375c" class="cell" data-execution_count="14">
+<div id="617e6bbb" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>masks, threshold <span class="op">=</span> otsu_threshold(img, <span class="dv">3</span>)</span>
@@ -714,7 +718,7 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 </div>
 <p>We can see the edges are much sharper in the upsampled masks compared to the upsampled image. This is because the nearest neighbour interpolation method does not smooth the edges.</p>
 <p>TODO: Test same thing with pyrUp</p>
-<div id="99e7a372" class="cell" data-execution_count="15">
+<div id="c0685471" class="cell" data-execution_count="15">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upsample_pyramid_(img: np.ndarray) <span class="op">-&gt;</span> np.ndarray:</span>
@@ -768,294 +772,87 @@ N_{\text{pixels}} = N_x \cdot N_y = 50.0 \cdot L_x \cdot L_y
 <h1>Task 4</h1>
 <section id="data-handling-and-preprocessing-10-points" class="level2">
 <h2 class="anchored" data-anchor-id="data-handling-and-preprocessing-10-points">Data Handling and Preprocessing (10 Points)</h2>
-<div class="question">
 <ol type="a">
 <li>You can focus for now on loading the T1-weighted images and the matching labels.</li>
-<li>Create a dataloader for the data using PyTorch’s Dataloader (or Monai’s Dataloader class)</li>
+</ol>
+<p>We used the <code>LoadImaged</code> transform from MONAI to load multiple modalities (<code>t1</code>, <code>t1ce</code>, <code>t2</code>, <code>flair</code>) and corresponding labels. The images are concatenated into a single tensor using the <code>ConcatItemsd</code> transform, and the labels are remapped using <code>RemapLabels</code> to ensure the labels are correctly handled.</p>
+<ol start="2" type="a">
+<li>Create a dataloader for the data using PyTorch’s Dataloader (or Monai’s Dataloader class).</li>
+</ol>
+<p>The dataloader is created using the <code>get_dataloader</code> function. This function: - Reads the split files (e.g., <code>train.txt</code>, <code>validation.txt</code>, <code>test.txt</code>) containing dataset paths. - Applies a transformation pipeline (<code>get_transforms</code>) that preprocesses and augments the data. - Uses MONAI’s <code>CacheDataset</code> for efficient loading and preprocessing. - Wraps the dataset in PyTorch’s <code>DataLoader</code> to iterate over batches during training and validation.</p>
+<ol start="3" type="a">
 <li>Create suitable augmentations for the task to solve. Please note: If you apply transformations to the input data, you should think about if you need to apply any transformation to the label of the image as well.</li>
 </ol>
-</div>
-<div class="answer">
-<p>We didnt used Monai’s Dataloader class, because we wanted to use the data in the HPC. The dataset implementation is availabel in the <code>task4/brats_segmentations/dataloader.py</code></p>
-<div class="hscroll">
-<div id="623dbc34" class="cell" data-execution_count="16">
-<div class="cell-output cell-output-stdout">
-<pre><code>file name: task4/brats_segmentation/dataloader.py</code></pre>
-</div>
-<div class="cell-output cell-output-display cell-output-markdown">
-<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ConvertToMultiChannelBasedOnBratsClassesd(MapTransform):</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__call__</span>(<span class="va">self</span>, data):</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> <span class="bu">dict</span>(data)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> key <span class="kw">in</span> <span class="va">self</span>.keys:</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> key <span class="op">!=</span> <span class="st">"label"</span>:</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> []</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Tumor Core (TC): Combine label 1 and</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>            tc <span class="op">=</span> torch.logical_or(d[key] <span class="op">==</span> <span class="dv">1</span>, d[key] <span class="op">==</span> <span class="dv">4</span>)</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>            result.append(tc)</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Whole Tumor (WT): Combine label 1, label 2, and label 4</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>            wt <span class="op">=</span> torch.logical_or(</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                torch.logical_or(d[key] <span class="op">==</span> <span class="dv">2</span>, d[key] <span class="op">==</span> <span class="dv">4</span>), d[key] <span class="op">==</span> <span class="dv">1</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>            result.append(wt)</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Enhancing Tumor (ET): Only label 4</span></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>            et <span class="op">=</span> d[key] <span class="op">==</span> <span class="dv">4</span></span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>            result.append(et)</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Stack binary masks into multi-channel format</span></span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>            d[key] <span class="op">=</span> torch.stack(result, dim<span class="op">=</span><span class="dv">0</span>).<span class="bu">float</span>().squeeze(<span class="dv">1</span>)</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> d</span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RemapLabels(MapTransform):</span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, keys, mapping, allow_missing_keys<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(keys, allow_missing_keys)</span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mapping <span class="op">=</span> mapping</span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__call__</span>(<span class="va">self</span>, data):</span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> <span class="bu">dict</span>(data)</span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> key, value <span class="kw">in</span> <span class="va">self</span>.mapping.items():</span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>            d[<span class="st">"label"</span>][d[<span class="st">"label"</span>] <span class="op">==</span> key] <span class="op">=</span> value</span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> d</span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_transforms(roi_size, augment<span class="op">=</span><span class="va">True</span>):</span>
-<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="co">    Generate transforms for data preprocessing and augmentation.</span></span>
-<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a><span class="co">        roi_size (tuple): Size of the region of interest for cropping.</span></span>
-<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a><span class="co">        augment (bool): Whether to apply augmentations.</span></span>
-<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a><span class="co">        Compose: Transformation pipeline.</span></span>
-<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Using roi_size"</span>, roi_size)</span>
-<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>    images_types <span class="op">=</span> [<span class="st">"t1"</span>, <span class="st">"t1ce"</span>, <span class="st">"t2"</span>, <span class="st">"flair"</span>]</span>
-<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>    transforms <span class="op">=</span> [</span>
-<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a>        LoadImaged(keys<span class="op">=</span>images_types <span class="op">+</span> [<span class="st">"label"</span>]),</span>
-<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>        EnsureChannelFirstd(keys<span class="op">=</span>images_types <span class="op">+</span> [<span class="st">"label"</span>]),</span>
-<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>        ConcatItemsd(keys<span class="op">=</span>images_types, name<span class="op">=</span><span class="st">"image"</span>),</span>
-<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>        DeleteItemsd(keys<span class="op">=</span>images_types),</span>
-<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>        Orientationd(keys<span class="op">=</span>[<span class="st">"image"</span>, <span class="st">"label"</span>], axcodes<span class="op">=</span><span class="st">"RAS"</span>),</span>
-<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>        <span class="co"># CropForegroundd(</span></span>
-<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     keys=["image", "label"],</span></span>
-<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     source_key="image",</span></span>
-<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     k_divisible=roi_size,</span></span>
-<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     allow_smaller=False,</span></span>
-<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ),</span></span>
-<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a>        Spacingd(</span>
-<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a>            keys<span class="op">=</span>[<span class="st">"image"</span>, <span class="st">"label"</span>],</span>
-<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a>            pixdim<span class="op">=</span>(<span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>),</span>
-<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a>            mode<span class="op">=</span>(<span class="st">"bilinear"</span>, <span class="st">"nearest"</span>),</span>
-<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb19-69"><a href="#cb19-69" aria-hidden="true" tabindex="-1"></a>        NormalizeIntensityd(keys<span class="op">=</span><span class="st">"image"</span>, nonzero<span class="op">=</span><span class="va">True</span>, channel_wise<span class="op">=</span><span class="va">True</span>),</span>
-<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ConvertToMultiChannelBasedOnBratsClassesd(</span></span>
-<span id="cb19-71"><a href="#cb19-71" aria-hidden="true" tabindex="-1"></a>        <span class="co">#     keys=["label"]</span></span>
-<span id="cb19-72"><a href="#cb19-72" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ),  # One-hot encode labels</span></span>
-<span id="cb19-73"><a href="#cb19-73" aria-hidden="true" tabindex="-1"></a>        RemapLabels(keys<span class="op">=</span>[<span class="st">"label"</span>], mapping<span class="op">=</span>{<span class="dv">4</span>: <span class="dv">3</span>}),</span>
-<span id="cb19-74"><a href="#cb19-74" aria-hidden="true" tabindex="-1"></a>        AsDiscreted(keys<span class="op">=</span><span class="st">"label"</span>, to_onehot<span class="op">=</span><span class="dv">4</span>),</span>
-<span id="cb19-75"><a href="#cb19-75" aria-hidden="true" tabindex="-1"></a>        RandSpatialCropd(keys<span class="op">=</span>[<span class="st">"image"</span>, <span class="st">"label"</span>], roi_size<span class="op">=</span>roi_size, random_size<span class="op">=</span><span class="va">False</span>),</span>
-<span id="cb19-76"><a href="#cb19-76" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb19-77"><a href="#cb19-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-78"><a href="#cb19-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> augment:</span>
-<span id="cb19-79"><a href="#cb19-79" aria-hidden="true" tabindex="-1"></a>        transforms.extend(</span>
-<span id="cb19-80"><a href="#cb19-80" aria-hidden="true" tabindex="-1"></a>            [</span>
-<span id="cb19-81"><a href="#cb19-81" aria-hidden="true" tabindex="-1"></a>                RandFlipd(keys<span class="op">=</span>[<span class="st">"image"</span>, <span class="st">"label"</span>], prob<span class="op">=</span><span class="fl">0.5</span>, spatial_axis<span class="op">=</span><span class="dv">0</span>),</span>
-<span id="cb19-82"><a href="#cb19-82" aria-hidden="true" tabindex="-1"></a>                RandFlipd(keys<span class="op">=</span>[<span class="st">"image"</span>, <span class="st">"label"</span>], prob<span class="op">=</span><span class="fl">0.5</span>, spatial_axis<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb19-83"><a href="#cb19-83" aria-hidden="true" tabindex="-1"></a>                RandFlipd(keys<span class="op">=</span>[<span class="st">"image"</span>, <span class="st">"label"</span>], prob<span class="op">=</span><span class="fl">0.5</span>, spatial_axis<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="cb19-84"><a href="#cb19-84" aria-hidden="true" tabindex="-1"></a>            ]</span>
-<span id="cb19-85"><a href="#cb19-85" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb19-86"><a href="#cb19-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-87"><a href="#cb19-87" aria-hidden="true" tabindex="-1"></a>    transforms.append(ToTensord(keys<span class="op">=</span>[<span class="st">"image"</span>, <span class="st">"label"</span>]))</span>
-<span id="cb19-88"><a href="#cb19-88" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Compose(transforms)</span>
-<span id="cb19-89"><a href="#cb19-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-90"><a href="#cb19-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-91"><a href="#cb19-91" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_dataloader(</span>
-<span id="cb19-92"><a href="#cb19-92" aria-hidden="true" tabindex="-1"></a>    split_dir: <span class="bu">str</span> <span class="op">|</span> os.PathLike,</span>
-<span id="cb19-93"><a href="#cb19-93" aria-hidden="true" tabindex="-1"></a>    name: Literal[<span class="st">"train"</span>, <span class="st">"test"</span>, <span class="st">"validation"</span>],</span>
-<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a>    roi_size: <span class="bu">tuple</span>,</span>
-<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a>    batch_size: <span class="bu">int</span> <span class="op">=</span> <span class="dv">2</span>,</span>
-<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a>    num_workers: <span class="bu">int</span> <span class="op">=</span> <span class="dv">0</span>,</span>
-<span id="cb19-97"><a href="#cb19-97" aria-hidden="true" tabindex="-1"></a>    cache_rate: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span id="cb19-98"><a href="#cb19-98" aria-hidden="true" tabindex="-1"></a>):</span>
-<span id="cb19-99"><a href="#cb19-99" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb19-100"><a href="#cb19-100" aria-hidden="true" tabindex="-1"></a><span class="co">    Create a PyTorch DataLoader for the BraTS dataset.</span></span>
-<span id="cb19-101"><a href="#cb19-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-102"><a href="#cb19-102" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb19-103"><a href="#cb19-103" aria-hidden="true" tabindex="-1"></a><span class="co">        split_dir (str): Path to the directory containing split JSON files.</span></span>
-<span id="cb19-104"><a href="#cb19-104" aria-hidden="true" tabindex="-1"></a><span class="co">        roi_size (tuple): Size of the region of interest for cropping.</span></span>
-<span id="cb19-105"><a href="#cb19-105" aria-hidden="true" tabindex="-1"></a><span class="co">        batch_size (int): Number of samples per batch.</span></span>
-<span id="cb19-106"><a href="#cb19-106" aria-hidden="true" tabindex="-1"></a><span class="co">        num_workers (int): Number of workers to use for</span></span>
-<span id="cb19-107"><a href="#cb19-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-108"><a href="#cb19-108" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb19-109"><a href="#cb19-109" aria-hidden="true" tabindex="-1"></a><span class="co">        DataLoader: PyTorch DataLoader.</span></span>
-<span id="cb19-110"><a href="#cb19-110" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb19-111"><a href="#cb19-111" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> name <span class="kw">not</span> <span class="kw">in</span> [<span class="st">"train"</span>, <span class="st">"test"</span>, <span class="st">"validation"</span>]:</span>
-<span id="cb19-112"><a href="#cb19-112" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"name must be one of 'train', 'test', or 'validation'"</span>)</span>
-<span id="cb19-113"><a href="#cb19-113" aria-hidden="true" tabindex="-1"></a>    split_dir <span class="op">=</span> Path(split_dir)</span>
-<span id="cb19-114"><a href="#cb19-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(split_dir <span class="op">/</span> <span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.txt"</span>, <span class="st">"r"</span>) <span class="im">as</span> f:</span>
-<span id="cb19-115"><a href="#cb19-115" aria-hidden="true" tabindex="-1"></a>        files <span class="op">=</span> json.load(f)</span>
-<span id="cb19-116"><a href="#cb19-116" aria-hidden="true" tabindex="-1"></a>    transform <span class="op">=</span> get_transforms(roi_size, augment<span class="op">=</span><span class="va">True</span> <span class="cf">if</span> name <span class="op">==</span> <span class="st">"train"</span> <span class="cf">else</span> <span class="va">False</span>)</span>
-<span id="cb19-117"><a href="#cb19-117" aria-hidden="true" tabindex="-1"></a>    dataset <span class="op">=</span> CacheDataset(</span>
-<span id="cb19-118"><a href="#cb19-118" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>files,</span>
-<span id="cb19-119"><a href="#cb19-119" aria-hidden="true" tabindex="-1"></a>        transform<span class="op">=</span>transform,</span>
-<span id="cb19-120"><a href="#cb19-120" aria-hidden="true" tabindex="-1"></a>        cache_rate<span class="op">=</span><span class="fl">0.01</span>,</span>
-<span id="cb19-121"><a href="#cb19-121" aria-hidden="true" tabindex="-1"></a>        num_workers<span class="op">=</span>num_workers,</span>
-<span id="cb19-122"><a href="#cb19-122" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-123"><a href="#cb19-123" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> DataLoader(</span>
-<span id="cb19-124"><a href="#cb19-124" aria-hidden="true" tabindex="-1"></a>        dataset, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">True</span>, num_workers<span class="op">=</span>num_workers</span>
-<span id="cb19-125"><a href="#cb19-125" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-126"><a href="#cb19-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-127"><a href="#cb19-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-128"><a href="#cb19-128" aria-hidden="true" tabindex="-1"></a><span class="co"># DataLoader setup with CacheDataset</span></span>
-<span id="cb19-129"><a href="#cb19-129" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_dataloaders(split_dir, roi_size, batch_size, num_workers<span class="op">=</span><span class="dv">4</span>):</span>
-<span id="cb19-130"><a href="#cb19-130" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb19-131"><a href="#cb19-131" aria-hidden="true" tabindex="-1"></a><span class="co">    Create data loaders for training, validation, and testing.</span></span>
-<span id="cb19-132"><a href="#cb19-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-133"><a href="#cb19-133" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb19-134"><a href="#cb19-134" aria-hidden="true" tabindex="-1"></a><span class="co">        split_dir (str): Path to the directory containing split JSON files.</span></span>
-<span id="cb19-135"><a href="#cb19-135" aria-hidden="true" tabindex="-1"></a><span class="co">        roi_size (tuple): Size of the region of interest for cropping.</span></span>
-<span id="cb19-136"><a href="#cb19-136" aria-hidden="true" tabindex="-1"></a><span class="co">        batch_size (int): Batch size for data loaders.</span></span>
-<span id="cb19-137"><a href="#cb19-137" aria-hidden="true" tabindex="-1"></a><span class="co">        num_workers (int): Number of workers for data loading.</span></span>
-<span id="cb19-138"><a href="#cb19-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-139"><a href="#cb19-139" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb19-140"><a href="#cb19-140" aria-hidden="true" tabindex="-1"></a><span class="co">        tuple: Training, validation, and test DataLoaders.</span></span>
-<span id="cb19-141"><a href="#cb19-141" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb19-142"><a href="#cb19-142" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [</span>
-<span id="cb19-143"><a href="#cb19-143" aria-hidden="true" tabindex="-1"></a>        get_dataloader(split_dir, name, roi_size, batch_size, num_workers)</span>
-<span id="cb19-144"><a href="#cb19-144" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name <span class="kw">in</span> [<span class="st">"train"</span>, <span class="st">"validation"</span>, <span class="st">"test"</span>]</span>
-<span id="cb19-145"><a href="#cb19-145" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb19-146"><a href="#cb19-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-147"><a href="#cb19-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-148"><a href="#cb19-148" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_images(images, segmentation, slice_index, label_color):</span>
-<span id="cb19-149"><a href="#cb19-149" aria-hidden="true" tabindex="-1"></a>    imgs <span class="op">=</span> images[..., slice_index]</span>
-<span id="cb19-150"><a href="#cb19-150" aria-hidden="true" tabindex="-1"></a>    imgs <span class="op">=</span> (imgs <span class="op">-</span> imgs.<span class="bu">min</span>(axis<span class="op">=</span><span class="dv">0</span>)) <span class="op">/</span> (imgs.<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">-</span> imgs.<span class="bu">min</span>(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span> <span class="fl">1e-5</span>)</span>
-<span id="cb19-151"><a href="#cb19-151" aria-hidden="true" tabindex="-1"></a>    seg <span class="op">=</span> segmentation[..., slice_index]</span>
-<span id="cb19-152"><a href="#cb19-152" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> img <span class="kw">in</span> imgs:</span>
-<span id="cb19-153"><a href="#cb19-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-154"><a href="#cb19-154" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> np.stack([img, img, img], axis<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb19-155"><a href="#cb19-155" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> index, color <span class="kw">in</span> <span class="bu">enumerate</span>(label_color, start<span class="op">=</span><span class="dv">1</span>):</span>
-<span id="cb19-156"><a href="#cb19-156" aria-hidden="true" tabindex="-1"></a>            img[seg <span class="op">==</span> index] <span class="op">=</span> color</span>
-<span id="cb19-157"><a href="#cb19-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-158"><a href="#cb19-158" aria-hidden="true" tabindex="-1"></a>        <span class="cf">yield</span> img</span>
-<span id="cb19-159"><a href="#cb19-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-160"><a href="#cb19-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-161"><a href="#cb19-161" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualization utility using Weights &amp; Biases</span></span>
-<span id="cb19-162"><a href="#cb19-162" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize_samples(loader: DataLoader):</span>
-<span id="cb19-163"><a href="#cb19-163" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb19-164"><a href="#cb19-164" aria-hidden="true" tabindex="-1"></a><span class="co">    Visualize 2D slices of images and labels using Weights &amp; Biases.</span></span>
-<span id="cb19-165"><a href="#cb19-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-166"><a href="#cb19-166" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
-<span id="cb19-167"><a href="#cb19-167" aria-hidden="true" tabindex="-1"></a><span class="co">        loader: DataLoader to fetch samples from.</span></span>
-<span id="cb19-168"><a href="#cb19-168" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb19-169"><a href="#cb19-169" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"------------"</span>)</span>
-<span id="cb19-170"><a href="#cb19-170" aria-hidden="true" tabindex="-1"></a>    <span class="co"># label_color = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]</span></span>
-<span id="cb19-171"><a href="#cb19-171" aria-hidden="true" tabindex="-1"></a>    <span class="co"># label_text = ["Tumor Core", "Whole Tumor", "Enhancing"]</span></span>
-<span id="cb19-172"><a href="#cb19-172" aria-hidden="true" tabindex="-1"></a>    <span class="co"># label_color = [[0, 0, 1], [0, 1, 0], [1, 1, 0], [1, 0, 0]]</span></span>
-<span id="cb19-173"><a href="#cb19-173" aria-hidden="true" tabindex="-1"></a>    <span class="co"># label_text = [</span></span>
-<span id="cb19-174"><a href="#cb19-174" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     "Necrotic and Non-Enhancing Tumor",</span></span>
-<span id="cb19-175"><a href="#cb19-175" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     "Edema",</span></span>
-<span id="cb19-176"><a href="#cb19-176" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     "IMPOSSIBLE",</span></span>
-<span id="cb19-177"><a href="#cb19-177" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     "Enhancing Tumor",</span></span>
-<span id="cb19-178"><a href="#cb19-178" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ]</span></span>
-<span id="cb19-179"><a href="#cb19-179" aria-hidden="true" tabindex="-1"></a>    label_color <span class="op">=</span> [[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>], [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>]]</span>
-<span id="cb19-180"><a href="#cb19-180" aria-hidden="true" tabindex="-1"></a>    label_text <span class="op">=</span> [<span class="st">"Necrotic and Non-Enhancing Tumor"</span>, <span class="st">"Edema"</span>, <span class="st">"Enhancing Tumor"</span>]</span>
-<span id="cb19-181"><a href="#cb19-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-182"><a href="#cb19-182" aria-hidden="true" tabindex="-1"></a>    sample <span class="op">=</span> <span class="bu">next</span>(<span class="bu">iter</span>(loader))</span>
-<span id="cb19-183"><a href="#cb19-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-184"><a href="#cb19-184" aria-hidden="true" tabindex="-1"></a>    <span class="co"># sample[imgage].shape = (batch_size, num_channels, H, W, D)</span></span>
-<span id="cb19-185"><a href="#cb19-185" aria-hidden="true" tabindex="-1"></a>    images <span class="op">=</span> sample[<span class="st">"image"</span>][<span class="dv">0</span>].numpy()  <span class="co"># First item in the batch</span></span>
-<span id="cb19-186"><a href="#cb19-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-187"><a href="#cb19-187" aria-hidden="true" tabindex="-1"></a>    segmentation <span class="op">=</span> sample[<span class="st">"label"</span>]</span>
-<span id="cb19-188"><a href="#cb19-188" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(segmentation.shape)</span>
-<span id="cb19-189"><a href="#cb19-189" aria-hidden="true" tabindex="-1"></a>    segmentation <span class="op">=</span> torch.argmax(segmentation[<span class="dv">0</span>], dim<span class="op">=</span><span class="dv">0</span>).numpy()</span>
-<span id="cb19-190"><a href="#cb19-190" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> (</span>
-<span id="cb19-191"><a href="#cb19-191" aria-hidden="true" tabindex="-1"></a>        images.shape[<span class="dv">1</span>:] <span class="op">==</span> segmentation.shape</span>
-<span id="cb19-192"><a href="#cb19-192" aria-hidden="true" tabindex="-1"></a>    ), <span class="ss">f"Shape mismatch </span><span class="sc">{</span>images<span class="sc">.</span>shape<span class="op">=</span><span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>segmentation<span class="sc">.</span>shape<span class="op">=</span><span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb19-193"><a href="#cb19-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-194"><a href="#cb19-194" aria-hidden="true" tabindex="-1"></a>    initial_slice <span class="op">=</span> images.shape[<span class="op">-</span><span class="dv">1</span>] <span class="op">//</span> <span class="dv">2</span></span>
-<span id="cb19-195"><a href="#cb19-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-196"><a href="#cb19-196" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3D visualization :')</span></span>
-<span id="cb19-197"><a href="#cb19-197" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> images.shape[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">4</span>:</span>
-<span id="cb19-198"><a href="#cb19-198" aria-hidden="true" tabindex="-1"></a>        fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
-<span id="cb19-199"><a href="#cb19-199" aria-hidden="true" tabindex="-1"></a>        plt.subplots_adjust(bottom<span class="op">=</span><span class="fl">0.2</span>)</span>
-<span id="cb19-200"><a href="#cb19-200" aria-hidden="true" tabindex="-1"></a>        axes <span class="op">=</span> axes.flatten()</span>
-<span id="cb19-201"><a href="#cb19-201" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb19-202"><a href="#cb19-202" aria-hidden="true" tabindex="-1"></a>        fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, images.shape[<span class="dv">0</span>], figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
-<span id="cb19-203"><a href="#cb19-203" aria-hidden="true" tabindex="-1"></a>    plt.subplots_adjust(bottom<span class="op">=</span><span class="fl">0.2</span>)</span>
-<span id="cb19-204"><a href="#cb19-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-205"><a href="#cb19-205" aria-hidden="true" tabindex="-1"></a>    img_displays <span class="op">=</span> []</span>
-<span id="cb19-206"><a href="#cb19-206" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ax, image, title <span class="kw">in</span> <span class="bu">zip</span>(</span>
-<span id="cb19-207"><a href="#cb19-207" aria-hidden="true" tabindex="-1"></a>        axes,</span>
-<span id="cb19-208"><a href="#cb19-208" aria-hidden="true" tabindex="-1"></a>        make_images(images, segmentation, initial_slice, label_color),</span>
-<span id="cb19-209"><a href="#cb19-209" aria-hidden="true" tabindex="-1"></a>        [<span class="st">"T1"</span>, <span class="st">"T1CE"</span>, <span class="st">"T2"</span>, <span class="st">"FLAIR"</span>],</span>
-<span id="cb19-210"><a href="#cb19-210" aria-hidden="true" tabindex="-1"></a>    ):</span>
-<span id="cb19-211"><a href="#cb19-211" aria-hidden="true" tabindex="-1"></a>        ax.set_title(title)</span>
-<span id="cb19-212"><a href="#cb19-212" aria-hidden="true" tabindex="-1"></a>        ax.axis(<span class="st">"off"</span>)</span>
-<span id="cb19-213"><a href="#cb19-213" aria-hidden="true" tabindex="-1"></a>        img_displays.append(ax.imshow(image))</span>
-<span id="cb19-214"><a href="#cb19-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-215"><a href="#cb19-215" aria-hidden="true" tabindex="-1"></a>    ax_slider <span class="op">=</span> plt.axes([<span class="fl">0.2</span>, <span class="fl">0.05</span>, <span class="fl">0.65</span>, <span class="fl">0.03</span>])  <span class="co"># [left, bottom, width, height]</span></span>
-<span id="cb19-216"><a href="#cb19-216" aria-hidden="true" tabindex="-1"></a>    slider <span class="op">=</span> Slider(</span>
-<span id="cb19-217"><a href="#cb19-217" aria-hidden="true" tabindex="-1"></a>        ax_slider, <span class="st">"Slice"</span>, <span class="dv">0</span>, images.shape[<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span> <span class="dv">1</span>, valinit<span class="op">=</span>initial_slice, valstep<span class="op">=</span><span class="dv">1</span></span>
-<span id="cb19-218"><a href="#cb19-218" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-219"><a href="#cb19-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-220"><a href="#cb19-220" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update(_):</span>
-<span id="cb19-221"><a href="#cb19-221" aria-hidden="true" tabindex="-1"></a>        slice_index <span class="op">=</span> <span class="bu">int</span>(slider.val)</span>
-<span id="cb19-222"><a href="#cb19-222" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> img_display, img <span class="kw">in</span> <span class="bu">zip</span>(</span>
-<span id="cb19-223"><a href="#cb19-223" aria-hidden="true" tabindex="-1"></a>            img_displays, make_images(images, segmentation, slice_index, label_color)</span>
-<span id="cb19-224"><a href="#cb19-224" aria-hidden="true" tabindex="-1"></a>        ):</span>
-<span id="cb19-225"><a href="#cb19-225" aria-hidden="true" tabindex="-1"></a>            img_display.set_data(img)</span>
-<span id="cb19-226"><a href="#cb19-226" aria-hidden="true" tabindex="-1"></a>            fig.suptitle(<span class="ss">f"Slice </span><span class="sc">{</span>slice_index<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-227"><a href="#cb19-227" aria-hidden="true" tabindex="-1"></a>        fig.canvas.draw_idle()</span>
-<span id="cb19-228"><a href="#cb19-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-229"><a href="#cb19-229" aria-hidden="true" tabindex="-1"></a>    cmap <span class="op">=</span> ListedColormap(<span class="bu">list</span>(label_color))</span>
-<span id="cb19-230"><a href="#cb19-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-231"><a href="#cb19-231" aria-hidden="true" tabindex="-1"></a>    axes[<span class="op">-</span><span class="dv">1</span>].legend(</span>
-<span id="cb19-232"><a href="#cb19-232" aria-hidden="true" tabindex="-1"></a>        handles<span class="op">=</span>[Patch(color<span class="op">=</span>cmap(i), label<span class="op">=</span>text) <span class="cf">for</span> i, text <span class="kw">in</span> <span class="bu">enumerate</span>(label_text)],</span>
-<span id="cb19-233"><a href="#cb19-233" aria-hidden="true" tabindex="-1"></a>        bbox_to_anchor<span class="op">=</span>(<span class="fl">1.05</span>, <span class="dv">1</span>),</span>
-<span id="cb19-234"><a href="#cb19-234" aria-hidden="true" tabindex="-1"></a>        loc<span class="op">=</span><span class="st">"upper left"</span>,</span>
-<span id="cb19-235"><a href="#cb19-235" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-236"><a href="#cb19-236" aria-hidden="true" tabindex="-1"></a>    slider.on_changed(update)</span>
-<span id="cb19-237"><a href="#cb19-237" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
-<span id="cb19-238"><a href="#cb19-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-239"><a href="#cb19-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-240"><a href="#cb19-240" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb19-241"><a href="#cb19-241" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Example usage</span></span>
-<span id="cb19-242"><a href="#cb19-242" aria-hidden="true" tabindex="-1"></a>    split_dir <span class="op">=</span> <span class="st">"./splits/split3"</span></span>
-<span id="cb19-243"><a href="#cb19-243" aria-hidden="true" tabindex="-1"></a>    <span class="co"># roi_size = (128, 128, 128)</span></span>
-<span id="cb19-244"><a href="#cb19-244" aria-hidden="true" tabindex="-1"></a>    roi_size <span class="op">=</span> (<span class="dv">240</span>, <span class="dv">240</span>, <span class="dv">160</span>)</span>
-<span id="cb19-245"><a href="#cb19-245" aria-hidden="true" tabindex="-1"></a>    batch_size <span class="op">=</span> <span class="dv">8</span></span>
-<span id="cb19-246"><a href="#cb19-246" aria-hidden="true" tabindex="-1"></a>    num_workers <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb19-247"><a href="#cb19-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-248"><a href="#cb19-248" aria-hidden="true" tabindex="-1"></a>    val_dataloader <span class="op">=</span> get_dataloader(</span>
-<span id="cb19-249"><a href="#cb19-249" aria-hidden="true" tabindex="-1"></a>        split_dir, <span class="st">"validation"</span>, roi_size, batch_size, num_workers</span>
-<span id="cb19-250"><a href="#cb19-250" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-251"><a href="#cb19-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-252"><a href="#cb19-252" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Inspect one batch from the training DataLoader</span></span>
-<span id="cb19-253"><a href="#cb19-253" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Testing the training DataLoader..."</span>)</span>
-<span id="cb19-254"><a href="#cb19-254" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> batch <span class="kw">in</span> val_dataloader:</span>
-<span id="cb19-255"><a href="#cb19-255" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Image shape: </span><span class="sc">{</span>batch[<span class="st">'image'</span>]<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-256"><a href="#cb19-256" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Label shape: </span><span class="sc">{</span>batch[<span class="st">'label'</span>]<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-257"><a href="#cb19-257" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Label unique values: </span><span class="sc">{</span>torch<span class="sc">.</span>unique(batch[<span class="st">'label'</span>])<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-258"><a href="#cb19-258" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
-<span id="cb19-259"><a href="#cb19-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-260"><a href="#cb19-260" aria-hidden="true" tabindex="-1"></a>    <span class="co"># # Visualize samples using Weights &amp; Biases</span></span>
-<span id="cb19-261"><a href="#cb19-261" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print("Visualizing samples with W&amp;B...")</span></span>
-<span id="cb19-262"><a href="#cb19-262" aria-hidden="true" tabindex="-1"></a>    visualize_samples(val_dataloader)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<style>
-.hscroll {
-    overflow-x: auto;
-    white-space: nowrap;
-    max-height: 500px;
-}
-</style>
-</div>
-</div>
+<p>Augmentations are applied in <code>get_transforms</code>: - <code>RandFlipd</code> flips the images and labels along different axes. - <code>RandSpatialCropd</code> crops the images and labels to the specified <code>roi_size</code>. The transformations account for labels by applying the same operations to both images and labels.</p>
+<p>the code applies several augmentations in the <code>get_transforms</code> function: - <strong>Spatial augmentations</strong>: - <code>RandFlipd</code> flips the image and label along all three spatial axes with a probability of 0.5. - <code>RandSpatialCropd</code> crops both the images and labels to a predefined <code>roi_size</code>. - <strong>Normalization</strong>: - <code>NormalizeIntensityd</code> normalizes the image intensities channel-wise.</p>
+</section>
+<section id="data-splitting-5-points" class="level2">
+<h2 class="anchored" data-anchor-id="data-splitting-5-points">2. Data Splitting (5 Points)</h2>
+<ol type="a">
+<li>Think about an appropriate split of the dataset into train, validation and test split. Briefly explain why it is good scientific practice to have separate Training, Validation and Test dataset?</li>
+</ol>
+<p>Separating these datasets prevents overfitting and ensures that: - <strong>Training dataset</strong> is used for learning. - <strong>Validation dataset</strong> is used for tuning hyperparameters and evaluating performance during training. - <strong>Test dataset</strong> is used for final unbiased evaluation of the model’s performance.</p>
+<ol start="2" type="a">
+<li>Please define the patient ids for each split in a separate file, like test.txt or validation.yml</li>
+</ol>
+<p>Patient IDs are loaded from JSON files (<code>train.txt</code>, <code>validation.txt</code>, <code>test.txt</code>) in the <code>split_dir</code>. This ensures reproducibility and consistency in data splits.</p>
+</section>
+<section id="model-selection-and-training-20-points" class="level2">
+<h2 class="anchored" data-anchor-id="model-selection-and-training-20-points">3. Model Selection and Training (20 Points)</h2>
+<ol type="a">
+<li>Implement a training pipeline to train the U-Net model of MONAI (or your own implementation if you want). Make use of the dataloader you created.</li>
+</ol>
+<p>The training pipeline is implemented in the <code>train()</code> function: - The MONAI <code>UNet</code> is initialized with: - <code>spatial_dims=3</code> (to handle 3D data). - The number of input channels matches the modalities (<code>t1</code>, <code>t1ce</code>, <code>t2</code>, <code>flair</code>), and the number of output channels corresponds to the number of segmentation classes. - Customizable encoder-decoder channels and strides. - The pipeline uses the dataloaders (<code>train_loader</code> and <code>val_loader</code>) generated from the <code>get_dataloaders()</code> function, which provides training and validation datasets with proper transformations and augmentations. - The optimizer is <code>Adam</code>, and the loss function is defined as the <code>DiceLoss</code>.</p>
+<ol start="2" type="a">
+<li>At the end of each epoch, you should run a validation of the models performance.</li>
+</ol>
+<p>Yes, the pipeline includes a validation step at the end of each epoch: - The validation data is processed through the model using <code>sliding_window_inference</code> to handle 3D volumes. - The Dice metric is calculated using the MONAI <code>DiceMetric</code> class to assess the overlap between predictions and ground truth. - Validation metrics, including the Dice score for each class and the mean Dice score, are logged for monitoring performance.</p>
+<ol start="3" type="a">
+<li>As we do not want to waste unnecessary energie and time, please implement an early stopping condition, that stops the training when the performance of the model does not improve for a few epochs on the validation set.</li>
+</ol>
+<p>Yes, early stopping is implemented: - The <code>train()</code> function monitors the mean Dice score on the validation set. - If the Dice score does not improve for a defined number of epochs (default: <code>10</code>, controlled by <code>config.early_stop_limit</code>), training is stopped early to save time and computational resources.</p>
+<ol start="4" type="a">
+<li><p>Which loss function do you think suitable to train your model for this segmentation task? The <code>DiceLoss</code> is used for training, as it is well-suited for segmentation tasks. This loss directly optimizes the Dice score, which is a common metric for medical image segmentation. It ensures accurate overlap between the predicted and ground truth masks.</p></li>
+<li><p>Please save the weights of the model that you trained. You can either save the weights after each epoch seperatly or you can override the previously saved model with the new best performing one after each validation.</p></li>
+</ol>
+<p>The model weights are saved during training: - After each epoch, if the validation mean Dice score improves, the current model’s weights are saved as <code>best_model.pth</code> in the specified <code>config.save_path</code> directory. - Only the best-performing model is saved, ensuring the most optimal model is retained without using unnecessary storage for suboptimal models.</p>
+</section>
+<section id="testing-and-performance-evaluation-15-points" class="level2">
+<h2 class="anchored" data-anchor-id="testing-and-performance-evaluation-15-points">4. Testing and Performance Evaluation (15 Points)</h2>
+<ol type="a">
+<li><p>Think about a suitable metric to evaluate the performance of your model on the test set. You can also use more than one metric to capture different aspects of the models performance. The suitable metric for evaluating the model’s performance on the test set is the <strong>Dice score</strong>, as it measures the overlap between predicted segmentation masks and ground truth labels. This metric is commonly used in medical image segmentation tasks.</p></li>
+<li><p>Briefly explain, which model should you evaluate? You get a trained model after each epoch? Should you evaluate all of them and pick the best performing one?</p></li>
+</ol>
+<ul>
+<li>The best-performing model is saved during training (<code>best_model.pth</code>) based on the highest mean Dice score on the validation set.</li>
+<li>This saved model should be evaluated on the test set, as it represents the model with the best generalization during training and validation.</li>
+<li>Evaluating all models from every epoch would be unnecessary and computationally expensive, as the best model has already been identified using the validation set.</li>
+</ul>
+<ol start="3" type="a">
+<li>Code a test pipeline to evaluate your model’s performance.</li>
+</ol>
+</section>
+<section id="extension-to-new-modalities-5-bonus-points" class="level2">
+<h2 class="anchored" data-anchor-id="extension-to-new-modalities-5-bonus-points">5. Extension to New Modalities (5 Bonus Points)</h2>
+<ol type="a">
+<li>Extent the model to include multiple modalities of your choice as input (T2, T1ce, …). Justify your choice. The modalities are combined into a single tensor using <code>ConcatItemsd</code> in the <code>get_transforms</code> function.</li>
+</ol>
+<ul>
+<li>Different MRI modalities capture complementary information about the tumor:
+<ul>
+<li><strong>T1</strong> and <strong>T1ce</strong> highlight the tumor core and enhancing regions.</li>
+<li><strong>T2</strong> and <strong>FLAIR</strong> are useful for visualizing edema and non-enhancing tumor areas.</li>
+</ul></li>
+<li>Combining modalities allows the model to leverage richer information, leading to improved segmentation performance and better differentiation between tumor sub-regions.</li>
+</ul>
+<ol start="2" type="a">
+<li>Train the model with the same data split and asses the performance of the model using your test pipeline. The training pipeline is designed to support multiple modalities as input:</li>
+</ol>
+<p>The dataloader loads all modalities (t1, t1ce, t2, flair), and the concatenated tensor is passed to the UNet model for training. Using the same data split, the performance of the model can be assessed by running the <code>test_model()</code> function on the test set after training. The test pipeline evaluates the model’s performance using metrics such as the Dice score.</p>
+<ol start="3" type="a">
+<li>Why and how does the performance change now that you use multiple modalities compared to using a single T1-weighted image as input?</li>
+</ol>
+<p>Each modality highlights different tumor characteristics. For example: - <strong>T1ce</strong> captures enhancing regions. - <strong>T2</strong> captures edema and fluid buildup. - <strong>FLAIR</strong> is effective for visualizing non-enhancing tumor areas. - Using multiple modalities provides the model with diverse and complementary information, enabling it to make more accurate segmentation predictions.</p>
 
 
 
