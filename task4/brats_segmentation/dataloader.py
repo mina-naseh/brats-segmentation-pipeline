@@ -20,6 +20,7 @@ from monai.transforms import (
     MapTransform,
     DeleteItemsd,
     AsDiscreted,
+    CropForegroundd,
 )
 from monai.data import CacheDataset, DataLoader
 from monai.utils import set_determinism
@@ -58,6 +59,18 @@ class ConvertToMultiChannelBasedOnBratsClassesd(MapTransform):
         return d
 
 
+class RemapLabels(MapTransform):
+    def __init__(self, keys, mapping, allow_missing_keys=False):
+        super().__init__(keys, allow_missing_keys)
+        self.mapping = mapping
+
+    def __call__(self, data):
+        d = dict(data)
+        for key, value in self.mapping.items():
+            d["label"][d["label"] == key] = value
+        return d
+
+
 def get_transforms(roi_size, augment=True):
     """
     Generate transforms for data preprocessing and augmentation.
@@ -69,6 +82,7 @@ def get_transforms(roi_size, augment=True):
     Returns:
         Compose: Transformation pipeline.
     """
+    print("Using roi_size", roi_size)
     images_types = ["t1", "t1ce", "t2", "flair"]
     transforms = [
         LoadImaged(keys=images_types + ["label"]),
@@ -76,6 +90,12 @@ def get_transforms(roi_size, augment=True):
         ConcatItemsd(keys=images_types, name="image"),
         DeleteItemsd(keys=images_types),
         Orientationd(keys=["image", "label"], axcodes="RAS"),
+        # CropForegroundd(
+        #     keys=["image", "label"],
+        #     source_key="image",
+        #     k_divisible=roi_size,
+        #     allow_smaller=False,
+        # ),
         Spacingd(
             keys=["image", "label"],
             pixdim=(1.0, 1.0, 1.0),
@@ -85,7 +105,8 @@ def get_transforms(roi_size, augment=True):
         # ConvertToMultiChannelBasedOnBratsClassesd(
         #     keys=["label"]
         # ),  # One-hot encode labels
-        AsDiscreted(keys="label", to_onehot=5),
+        RemapLabels(keys=["label"], mapping={4: 3}),
+        AsDiscreted(keys="label", to_onehot=4),
         RandSpatialCropd(keys=["image", "label"], roi_size=roi_size, random_size=False),
     ]
 
@@ -131,7 +152,7 @@ def get_dataloader(
     dataset = CacheDataset(
         data=files,
         transform=transform,
-        cache_rate=0.1,
+        cache_rate=0.01,
         num_workers=num_workers,
     )
     return DataLoader(
@@ -183,13 +204,15 @@ def visualize_samples(loader: DataLoader):
     print("------------")
     # label_color = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]
     # label_text = ["Tumor Core", "Whole Tumor", "Enhancing"]
-    label_color = [[0, 0, 1], [0, 1, 0], [1, 1, 0], [1, 0, 0]]
-    label_text = [
-        "Necrotic and Non-Enhancing Tumor",
-        "Edema",
-        "IMPOSSIBLE",
-        "Enhancing Tumor",
-    ]
+    # label_color = [[0, 0, 1], [0, 1, 0], [1, 1, 0], [1, 0, 0]]
+    # label_text = [
+    #     "Necrotic and Non-Enhancing Tumor",
+    #     "Edema",
+    #     "IMPOSSIBLE",
+    #     "Enhancing Tumor",
+    # ]
+    label_color = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]
+    label_text = ["Necrotic and Non-Enhancing Tumor", "Edema", "Enhancing Tumor"]
 
     sample = next(iter(loader))
 

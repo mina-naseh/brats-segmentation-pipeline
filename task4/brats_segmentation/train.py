@@ -1,11 +1,13 @@
 import os
 import time
+import numpy as np
 import torch
 from monai.networks.nets import UNet
 from monai.losses import DiceLoss
 from monai.metrics import DiceMetric
 from monai.inferers import sliding_window_inference
 from monai.data import decollate_batch
+from tqdm import tqdm
 from dataloader import get_dataloaders
 import wandb
 
@@ -18,9 +20,9 @@ def train():
             "roi_size": [128, 128, 128],
             "batch_size": 4,
             "epochs": 50,
-            "learning_rate": 1e-3,
+            "learning_rate": 0.05,
             "num_workers": 1,
-            "split_dir": "./splits/split1",
+            "split_dir": "./splits/split2",
             "data_dir": "/work/projects/ai_imaging_class/dataset",
             "early_stop_limit": 10,
             "save_path": "models",
@@ -52,12 +54,16 @@ def train():
         strides=(2, 2, 2, 2),
     ).to(device)
 
-    loss_function = DiceLoss(to_onehot_y=False, softmax=True)
+    loss_function = DiceLoss(to_onehot_y=False, softmax=True, include_background=False)
+    # loss_function = BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
 
     # Initialize metrics
     dice_metric = DiceMetric(
-        include_background=False, reduction="mean", get_not_nans=True
+        # include_background=False, reduction="mean", get_not_nans=True
+        include_background=False,
+        reduction="none",
+        get_not_nans=True,
     )
     # post_transform = Compose([
     #     Activations(softmax=True),
@@ -70,42 +76,43 @@ def train():
     os.makedirs(config.save_path, exist_ok=True)
 
     wandb.watch(model, log="all", log_freq=100)
-    epoch_loss = []
     for epoch in range(config.epochs):
         start_time = time.time()
         model.train()
-        epoch_loss.append([])
+        epoch_loss = 0
         dice_metric.reset()
 
-        for batch_idx, batch in enumerate(train_loader):
+        for batch_idx, batch in enumerate(
+            tqdm(train_loader, desc=f"Epoch {epoch + 1}")
+        ):
             inputs, labels = batch["image"].to(device), batch["label"].to(device)
 
             optimizer.zero_grad()
             outputs = model(inputs)
-            print(outputs.shape, labels.shape)
+            # print(outputs.shape, labels.shape)
             loss = loss_function(outputs, labels)
             loss.backward()
             optimizer.step()
 
-            epoch_loss[-1].append(loss.item())
+            epoch_loss += loss.item()
             dice_metric(y_pred=outputs, y=labels)
             wandb.log({"train_loss_step": loss.item()})
 
         # Aggregate and log training Dice scores
+        print(f"{dice_metric=}")
         dice_scores, _ = dice_metric.aggregate()
         dice_scores = dice_scores.cpu().numpy()
         dice_metric.reset()
 
-        dice_scores_dict = {
-            f"train_dice_class_{i}": score for i, score in enumerate(dice_scores)
-        }
-        print(
-            f"Epoch {epoch + 1}: Train Loss: {epoch_loss[-1]}, Dice: {dice_scores_dict}"
-        )
+        dice_scores_arr = np.nanmean(np.array(dice_scores), axis=0)
+        print(f"Epoch {epoch + 1}: Train Loss: {epoch_loss}, Dice: {dice_scores_arr}")
         wandb.log(
             {
                 "train_loss": epoch_loss / len(train_loader),
-                **dice_scores_dict,
+                **{
+                    f"train_dice_class_{i}": score
+                    for i, score in enumerate(dice_scores_arr)
+                },
             }
         )
 
@@ -154,7 +161,7 @@ def train():
         # Aggregate and log validation metrics
         dice_scores, _ = dice_metric.aggregate()
         dice_scores = dice_scores.cpu().numpy()
-        mean_dice = dice_scores.mean()
+        mean_dice = np.nanmean(dice_scores)
 
         wandb.log(
             {
