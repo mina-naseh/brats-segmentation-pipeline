@@ -7,7 +7,7 @@ from monai.losses import DiceLoss
 from monai.metrics import DiceMetric
 from monai.inferers import sliding_window_inference
 from monai.data import decollate_batch
-from torch.nn import functional as F
+from torch.nn import functional as F, BCEWithLogitsLoss
 from tqdm import tqdm
 from dataloader import get_dataloaders
 import wandb
@@ -61,8 +61,8 @@ def train():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = create_model(train_loader).to(device)
 
-    loss_function = DiceLoss(to_onehot_y=False, softmax=False, include_background=False)
-    # loss_function = BCEWithLogitsLoss()
+    # loss_function = DiceLoss(to_onehot_y=False, softmax=False, include_background=False)
+    loss_function = BCEWithLogitsLoss()
     # optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
     optimizer = torch.optim.AdamW(
         model.parameters(), lr=config.learning_rate, weight_decay=1e-5
@@ -99,17 +99,17 @@ def train():
 
             optimizer.zero_grad()
             outputs = model(inputs)
-            softmax_outputs = F.softmax(outputs, dim=1)
+            # outputs = F.softmax(outputs, dim=1) # BCEWithLogitsLoss expects logits as input, so no need to apply softmax
             # print(softmax_outputs[0, :, 0, 0, 0], labels[0, :, 0, 0, 0])
             # print(outputs.shape, labels.shape)
             # exit()
             # loss = loss_function(outputs, labels)
-            loss = loss_function(softmax_outputs, labels)
+            loss = loss_function(outputs, labels)
             loss.backward()
             optimizer.step()
 
             epoch_loss += loss.item()
-            dice_metric(y_pred=softmax_outputs, y=labels)
+            dice_metric(y_pred=outputs, y=labels)
             wandb.log({"train_loss_step": loss.item()})
 
         # Aggregate and log training Dice scores
