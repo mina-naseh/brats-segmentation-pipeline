@@ -1,13 +1,14 @@
 import os
 import time
 import numpy as np
+from pyparsing import C
 import torch
 from monai.networks.nets import UNet
 from monai.losses import DiceLoss
 from monai.metrics import DiceMetric
 from monai.inferers import sliding_window_inference
 from monai.data import decollate_batch
-from torch.nn import functional as F, BCEWithLogitsLoss
+from torch.nn import functional as F, BCEWithLogitsLoss, CrossEntropyLoss
 from tqdm import tqdm
 from dataloader import get_dataloaders
 import wandb
@@ -24,7 +25,7 @@ def create_model(dataloader):
         spatial_dims=3,
         in_channels=sample_image.shape[1],
         out_channels=sample_label.shape[1],
-        channels=(16, 32, 64, 128, 256),
+        channels=(16, 32, 64, 128),
         strides=(2, 2, 2, 2),
     )
     print(model)
@@ -36,15 +37,15 @@ def train():
     wandb.init(
         project="brats_segmentation",
         config={
-            "roi_size": [128, 128, 128],
+            "roi_size": [64, 64, 32],
             "batch_size": 16,
             "epochs": 50,
-            "learning_rate": 0.01,
+            "learning_rate": 0.0005,
             "num_workers": 1,
-            "split_dir": "./splits/split2",
+            "split_dir": "./splits/split1",
             "data_dir": "/work/projects/ai_imaging_class/dataset",
             "early_stop_limit": 10,
-            "save_path": "models",
+            "save_path": "models_tmp",
         },
     )
     config = wandb.config
@@ -62,7 +63,9 @@ def train():
     model = create_model(train_loader).to(device)
 
     # loss_function = DiceLoss(to_onehot_y=False, softmax=False, include_background=False)
-    loss_function = BCEWithLogitsLoss()
+    loss_function = CrossEntropyLoss(
+        weight=torch.tensor([0.1, 0.3, 0.3, 0.3]).to(device)
+    )
     # optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
     optimizer = torch.optim.AdamW(
         model.parameters(), lr=config.learning_rate, weight_decay=1e-5
@@ -88,6 +91,7 @@ def train():
     wandb.watch(model, log="all", log_freq=100)
     for epoch in range(config.epochs):
         start_time = time.time()
+        print(f"Epoch {epoch + 1}/{config.epochs}, starting time: {start_time}")
         model.train()
         epoch_loss = 0
         dice_metric.reset()
@@ -99,11 +103,14 @@ def train():
 
             optimizer.zero_grad()
             outputs = model(inputs)
+            outputs = F.softmax(outputs, dim=1)
+            # print(outputs.shape, labels.shape)
+            # print(np.unique(outputs.cpu().detach().numpy()))
+            # exit()
             # outputs = F.softmax(outputs, dim=1) # BCEWithLogitsLoss expects logits as input, so no need to apply softmax
             # print(softmax_outputs[0, :, 0, 0, 0], labels[0, :, 0, 0, 0])
             # print(outputs.shape, labels.shape)
             # exit()
-            # loss = loss_function(outputs, labels)
             loss = loss_function(outputs, labels)
             loss.backward()
             optimizer.step()
